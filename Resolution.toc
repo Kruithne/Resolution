@@ -1,0 +1,12 @@
+## Interface: 70300
+## Title: Resolution
+## Notes: Comprehensive Completionist Overview
+## Author: Kruithne
+## Version: v1-r1
+
+## X-Curse-Project-ID: resolution
+## X-GitHub-Repo: Kruithne/Resolution
+## X-License: All Rights Reserved. Modifications welcome on GitHub: https://github.com/Kruithne/Resolution
+## X-Localization: enUS
+
+Resolution.lua
