@@ -1,0 +1,3 @@
+[submodule "Krutilities"]
+	path = Krutilities
+	url = https://github.com/Kruithne/Krutilities.git
