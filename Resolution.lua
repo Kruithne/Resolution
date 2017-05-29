@@ -18,16 +18,38 @@ _R.ADDON_NAME = "Resolution";
 _R.MAIN_BACKDROP_COLOR = CreateColor(0, 0, 0, 0.85);
 _R.GENERIC_FRAME_STYLE = { tile = true, tileSize = 32, edgeSize = 1, bgFile = "TILESET\\GENERIC\\Grey", edgeFile = "TILESET\\GENERIC\\Grey", insets = { left = 2, right = 2, top = 2, bottom = 2 }};
 
+--[[
+	Resolution.Print
+	Output a message into chat, formatted for this add-on.
+
+	> self - Reference to Resolution.
+	> message - String to print to the chat.
+]]--
 _R.Print = function(self, message)
 	DEFAULT_CHAT_FRAME:AddMessage(message);
 end
 
+--[[
+	Resolution.OnAddonLoaded
+	Called when an add-on is loaded.
+
+	> self - Reference to Resolution.
+	> addonName - Name of the add-on which loaded.
+]]--
 _R.OnAddonLoaded = function(self, addonName)
 	if addonName == _R.ADDON_NAME then
 		self:OnLoad();
 	end
 end
 
+--[[
+	Resolution.CreateCornerButton
+	Create an automatically positoned utility button (top-right).
+
+	> self - Reference to Resolution.
+	> name - Frame name, used for debugging/idenity purposes.
+	> icon - Artwork file to use for this button.
+]]--
 _R.CreateCornerButton = function(self, name, icon)
 	local spawnData = {
 		type = "BUTTON",
@@ -35,16 +57,19 @@ _R.CreateCornerButton = function(self, name, icon)
 		name = name,
 		textures = {
 			{
+				-- Normal button texture.
 				setAllPoints = true,
 				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon,
 			},
 			{
+				-- Highlight texture.
 				setAllPoints = true,
 				texture = "Interface\\AddOns\\Resolution\\Artwork\\UI-Button-Highlight",
 				blendMode = "ADD",
 				buttonTex = "HIGHLIGHT"
 			},
 			{
+				-- Pushed texture.
 				setAllPoints = true,
 				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon .. "-Pushed",
 				buttonTex = "PUSHED"
@@ -60,10 +85,18 @@ _R.CreateCornerButton = function(self, name, icon)
 		spawnData.points = { point = "TOPRIGHT", x = -5, y = -5 }
 	end
 
+	-- Keep track of the last button we spawned to assist with positioning.
 	self.lastCornerButton = self.frameMain:SpawnFrame(spawnData);
 end
 
+--[[
+	Resolution.OnLoad
+	Called when this add-on is loaded.
+
+	> self - Reference to Resolution
+]]--
 _R.OnLoad = function(self)
+	-- Generate the main UI frame.
 	self.frameMain = _K:Frame({
 		width = 900, height = 500,
 		strata = "FULLSCREEN",
@@ -74,11 +107,11 @@ _R.OnLoad = function(self)
 		backdropBorderColor = self.MAIN_BACKDROP_COLOR
 	});
 
-	-- These will render from right to left.
+	-- Create utility buttons, these will render from right to left.
 	self:CreateCornerButton("$parentCloseButton", "UI-CloseButton");
 	self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton");
 
-	self:Print("Loaded!");
+	self:Print("Loaded!"); -- TODO: Replace this with something better.
 end
 
 -- Event Handler
