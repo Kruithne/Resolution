@@ -36,12 +36,14 @@ end
 	> self - Reference to Resolution.
 	> name - Frame name, used for debugging/idenity purposes.
 	> icon - Artwork file to use for this button.
+	> handler - Callback function to hook to this button.
 ]]--
-_R.CreateCornerButton = function(self, name, icon)
+_R.CreateCornerButton = function(self, name, icon, handler)
 	local spawnData = {
 		type = "BUTTON",
 		size = 32,
 		name = name,
+		scripts = { OnClick = handler },
 		textures = {
 			{
 				-- Normal button texture.
@@ -95,8 +97,8 @@ _R.OnLoad = function(self)
 	});
 
 	-- Create utility buttons, these will render from right to left.
-	self:CreateCornerButton("$parentCloseButton", "UI-CloseButton");
-	self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton");
+	self:CreateCornerButton("$parentCloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
+	self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
 	self:Print("Loaded!"); -- TODO: Replace this with something better.
 end
@@ -112,6 +114,26 @@ _R.OnAddonLoaded = function(self, addonName)
 	if addonName == _R.ADDON_NAME then
 		self:OnLoad();
 	end
+end
+
+--[[
+	Resolution.OnCloseButtonClicked
+	Invoked when the close utility button is pressed.
+
+	> self - Reference to the button that was pressed.
+]]--
+_R.OnCloseButtonClicked = function(self)
+	_R:Print("DEBUG: Close button clicked!");
+end
+
+--[[
+	Resolution.OnSettingsButtonClicked
+	Invoked when the settings utility button is clicked.
+
+	> self - Reference to the button that was pressed.
+]]--
+_R.OnSettingsButtonClicked = function(self)
+	_R:Print("DEBUG: Settings button clicked!");
 end
 
 -- Event Handler
