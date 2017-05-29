@@ -22,8 +22,8 @@ _R.GENERIC_FRAME_STYLE = { tile = true, tileSize = 32, edgeSize = 1, bgFile = "T
 	Resolution.Print
 	Output a message into chat, formatted for this add-on.
 
-	> self - Reference to Resolution.
-	> message - String to print to the chat.
+		self - Reference to Resolution.
+		message - String to print to the chat.
 ]]--
 _R.Print = function(self, message)
 	DEFAULT_CHAT_FRAME:AddMessage(message);
@@ -33,10 +33,10 @@ end
 	Resolution.CreateCornerButton
 	Create an automatically positoned utility button (top-right).
 
-	> self - Reference to Resolution.
-	> name - Frame name, used for debugging/idenity purposes.
-	> icon - Artwork file to use for this button.
-	> handler - Callback function to hook to this button.
+		self - Reference to Resolution.
+		name - Frame name, used for debugging/idenity purposes.
+		icon - Artwork file to use for this button.
+		handler - Callback function to hook to this button.
 ]]--
 _R.CreateCornerButton = function(self, name, icon, handler)
 	local spawnData = {
@@ -82,7 +82,7 @@ end
 	Resolution.OnLoad
 	Called when this add-on is loaded.
 
-	> self - Reference to Resolution
+		self - Reference to Resolution
 ]]--
 _R.OnLoad = function(self)
 	-- Generate the main UI frame.
@@ -107,8 +107,8 @@ end
 	Resolution.OnAddonLoaded
 	Called when an add-on is loaded.
 
-	> self - Reference to Resolution.
-	> addonName - Name of the add-on which loaded.
+		self - Reference to Resolution.
+		addonName - Name of the add-on which loaded.
 ]]--
 _R.OnAddonLoaded = function(self, addonName)
 	if addonName == _R.ADDON_NAME then
@@ -120,7 +120,7 @@ end
 	Resolution.OnCloseButtonClicked
 	Invoked when the close utility button is pressed.
 
-	> self - Reference to the button that was pressed.
+		self - Reference to the button that was pressed.
 ]]--
 _R.OnCloseButtonClicked = function(self)
 	_R:Print("DEBUG: Close button clicked!");
@@ -130,7 +130,7 @@ end
 	Resolution.OnSettingsButtonClicked
 	Invoked when the settings utility button is clicked.
 
-	> self - Reference to the button that was pressed.
+		self - Reference to the button that was pressed.
 ]]--
 _R.OnSettingsButtonClicked = function(self)
 	_R:Print("DEBUG: Settings button clicked!");
