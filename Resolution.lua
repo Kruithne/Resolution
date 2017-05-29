@@ -30,12 +30,19 @@ end
 
 _R.CreateCornerButton = function(self, name, icon)
 	local spawnData = {
+		type = "BUTTON",
 		size = 32,
 		name = name,
 		textures = {
 			{
 				setAllPoints = true,
-				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon
+				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon,
+			},
+			{
+				setAllPoints = true,
+				texture = "Interface\\AddOns\\Resolution\\Artwork\\UI-Button-Highlight",
+				blendMode = "ADD",
+				buttonTex = "HIGHLIGHT"
 			}
 		}
 	};
