@@ -30,19 +30,6 @@ _R.Print = function(self, message)
 end
 
 --[[
-	Resolution.OnAddonLoaded
-	Called when an add-on is loaded.
-
-	> self - Reference to Resolution.
-	> addonName - Name of the add-on which loaded.
-]]--
-_R.OnAddonLoaded = function(self, addonName)
-	if addonName == _R.ADDON_NAME then
-		self:OnLoad();
-	end
-end
-
---[[
 	Resolution.CreateCornerButton
 	Create an automatically positoned utility button (top-right).
 
@@ -112,6 +99,19 @@ _R.OnLoad = function(self)
 	self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton");
 
 	self:Print("Loaded!"); -- TODO: Replace this with something better.
+end
+
+--[[
+	Resolution.OnAddonLoaded
+	Called when an add-on is loaded.
+
+	> self - Reference to Resolution.
+	> addonName - Name of the add-on which loaded.
+]]--
+_R.OnAddonLoaded = function(self, addonName)
+	if addonName == _R.ADDON_NAME then
+		self:OnLoad();
+	end
 end
 
 -- Event Handler
