@@ -43,6 +43,11 @@ _R.CreateCornerButton = function(self, name, icon)
 				texture = "Interface\\AddOns\\Resolution\\Artwork\\UI-Button-Highlight",
 				blendMode = "ADD",
 				buttonTex = "HIGHLIGHT"
+			},
+			{
+				setAllPoints = true,
+				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon .. "-Pushed",
+				buttonTex = "PUSHED"
 			}
 		}
 	};
