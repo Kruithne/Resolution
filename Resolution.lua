@@ -30,21 +30,12 @@ end
 
 _R.CreateCornerButton = function(self, name, icon)
 	local spawnData = {
-		size = 48,
+		size = 32,
 		name = name,
 		textures = {
 			{
 				setAllPoints = true,
-				texture = "Interface\\EncounterJournal\\UI-ENCOUNTERJOURNALTEXTURES",
-				texCoord = {0.72265625, 0.81640625, 0.01953125, 0.06640625},
-				subLevel = 0
-			},
-			{
-				size = 26,
-				points = { point = "CENTER" },
-				texture = "Interface\\ICONS\\" .. icon,
-				subLevel = -1,
-				mask = "Interface\\CharacterFrame\\TempPortraitAlphaMask"
+				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon
 			}
 		}
 	};
@@ -72,8 +63,8 @@ _R.OnLoad = function(self)
 	});
 
 	-- These will render from right to left.
-	self:CreateCornerButton("$parentCloseButton", "Spell_Shadow_SacrificialShield");
-	self:CreateCornerButton("$parentSettingsButton", "INV_Eng_GearspringParts");
+	self:CreateCornerButton("$parentCloseButton", "UI-CloseButton");
+	self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton");
 
 	self:Print("Loaded!");
 end
