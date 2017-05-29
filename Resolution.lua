@@ -80,7 +80,7 @@ end
 
 --[[
 	Resolution.OnLoad
-	Called when this add-on is loaded.
+	Invoked when this add-on is loaded.
 
 		self - Reference to Resolution
 ]]--
@@ -105,7 +105,7 @@ end
 
 --[[
 	Resolution.OnAddonLoaded
-	Called when an add-on is loaded.
+	Invoked when an add-on is loaded.
 
 		self - Reference to Resolution.
 		addonName - Name of the add-on which loaded.
