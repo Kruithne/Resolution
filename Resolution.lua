@@ -40,30 +40,13 @@ end
 ]]--
 _R.CreateCornerButton = function(self, name, icon, handler)
 	local spawnData = {
-		type = "BUTTON",
 		size = 32,
 		name = name,
+		type = "BUTTON",
 		scripts = { OnClick = handler },
-		textures = {
-			{
-				-- Normal button texture.
-				setAllPoints = true,
-				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon,
-			},
-			{
-				-- Highlight texture.
-				setAllPoints = true,
-				texture = "Interface\\AddOns\\Resolution\\Artwork\\UI-Button-Highlight",
-				blendMode = "ADD",
-				buttonTex = "HIGHLIGHT"
-			},
-			{
-				-- Pushed texture.
-				setAllPoints = true,
-				texture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon .. "-Pushed",
-				buttonTex = "PUSHED"
-			}
-		}
+		pushedTexture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon .. "-Pushed",
+		highlightTexture = "Interface\\AddOns\\Resolution\\Artwork\\UI-Button-Highlight",
+		normalTexture = "Interface\\AddOns\\Resolution\\Artwork\\" .. icon
 	};
 
 	if self.lastCornerButton then
