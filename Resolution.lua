@@ -62,6 +62,33 @@ _R.CreateCornerButton = function(self, name, icon, handler)
 end
 
 --[[
+	Resolution.Open
+	Open the main panel of the add-on.
+
+		self - Reference to Resolution.
+]]--
+_R.Open = function(self)
+	if not self.frameMain then
+		-- Generate the main UI frame.
+		self.frameMain = _K:Frame({
+			width = 900, height = 500,
+			strata = "FULLSCREEN",
+			points = {point = "CENTER"},
+			name = "ResolutionFrame",
+			backdrop = self.GENERIC_FRAME_STYLE,
+			backdropColor = self.MAIN_BACKDROP_COLOR,
+			backdropBorderColor = self.MAIN_BACKDROP_COLOR
+		});
+
+		-- Create utility buttons, these will render from right to left.
+		self:CreateCornerButton("$parentCloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
+		self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
+	end
+
+	self.frameMain:Show();
+end
+
+--[[
 	Resolution.Close
 	Close the main panel of the add-on.
 
@@ -80,21 +107,7 @@ end
 		self - Reference to Resolution
 ]]--
 _R.OnLoad = function(self)
-	-- Generate the main UI frame.
-	self.frameMain = _K:Frame({
-		width = 900, height = 500,
-		strata = "FULLSCREEN",
-		points = {point = "CENTER"},
-		name = "ResolutionFrame",
-		backdrop = self.GENERIC_FRAME_STYLE,
-		backdropColor = self.MAIN_BACKDROP_COLOR,
-		backdropBorderColor = self.MAIN_BACKDROP_COLOR
-	});
-
-	-- Create utility buttons, these will render from right to left.
-	self:CreateCornerButton("$parentCloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
-	self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
-
+	self:Open();
 	self:Print("Loaded!"); -- TODO: Replace this with something better.
 end
 
