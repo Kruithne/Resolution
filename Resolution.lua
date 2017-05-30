@@ -108,7 +108,9 @@ end
 ]]--
 _R.OnLoad = function(self)
 	self:Open();
-	self:Print("Loaded!"); -- TODO: Replace this with something better.
+
+	local version = GetAddOnMetadata(self.ADDON_NAME, "Version");
+	self:Print(self.ADDON_NAME .. " " .. version .. " loaded!");
 end
 
 --[[
