@@ -15,8 +15,11 @@ local _K = Krutilities;
 
 -- Constants and Colors
 _R.ADDON_NAME = "Resolution";
+_R.CHAT_PREFIX = "%s - %%s";
 _R.MAIN_BACKDROP_COLOR = CreateColor(0, 0, 0, 0.85);
 _R.GENERIC_FRAME_STYLE = { tile = true, tileSize = 32, edgeSize = 1, bgFile = "TILESET\\GENERIC\\Grey", edgeFile = "TILESET\\GENERIC\\Grey", insets = { left = 2, right = 2, top = 2, bottom = 2 }};
+_R.CHAT_HIGHLIGHT_COLOR = CreateColor(0.77, 0.12, 0.23, 1);
+_R.CHAT_NORMAL_COLOR = CreateColor(0.25, 0.78, 0.92, 1);
 
 --[[
 	Resolution.Print
@@ -26,7 +29,8 @@ _R.GENERIC_FRAME_STYLE = { tile = true, tileSize = 32, edgeSize = 1, bgFile = "T
 		message - String to print to the chat.
 ]]--
 _R.Print = function(self, message)
-	DEFAULT_CHAT_FRAME:AddMessage(message);
+	message = self.CHAT_NORMAL_COLOR:WrapTextInColorCode(message);
+	DEFAULT_CHAT_FRAME:AddMessage(self.CHAT_PREFIX:format(message));
 end
 
 --[[
@@ -109,8 +113,12 @@ end
 _R.OnLoad = function(self)
 	self:Open();
 
+	-- Cache chat prefix.
+	local addonName = self.CHAT_HIGHLIGHT_COLOR:WrapTextInColorCode(self.ADDON_NAME);
+	self.CHAT_PREFIX = self.CHAT_PREFIX:format(addonName);
+
 	local version = GetAddOnMetadata(self.ADDON_NAME, "Version");
-	self:Print(self.ADDON_NAME .. " " .. version .. " loaded!");
+	self:Print(version .. " loaded!");
 end
 
 --[[
