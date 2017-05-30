@@ -62,6 +62,18 @@ _R.CreateCornerButton = function(self, name, icon, handler)
 end
 
 --[[
+	Resolution.Close
+	Close the main panel of the add-on.
+
+		self - Reference to Resolution.
+]]--
+_R.Close = function(self)
+	if self.frameMain then
+		self.frameMain:Hide();
+	end
+end
+
+--[[
 	Resolution.OnLoad
 	Invoked when this add-on is loaded.
 
@@ -106,7 +118,7 @@ end
 		self - Reference to the button that was pressed.
 ]]--
 _R.OnCloseButtonClicked = function(self)
-	_R:Print("DEBUG: Close button clicked!");
+	_R:Close();
 end
 
 --[[
