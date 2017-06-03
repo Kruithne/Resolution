@@ -8,6 +8,9 @@
 ]]--
 
 do
+	local _R = Resolution; -- Reference to addon container.
+	local _K = GetKrutilities(1.7); -- Reference to Krutilities instance.
+
 	-- [[ Register Event Hooks ]] --
 	_K.EventHandler(_R, {
 		["ADDON_LOADED"] = "OnAddonLoaded"

@@ -10,9 +10,7 @@
 do
 	-- [[ Local Optimization & Addon Setup ]] --
 	Resolution = {};
-
 	local _R = Resolution; -- Reference to addon container.
-	local _K = GetKrutilities(1.7); -- Reference to Krutilities instance.
 
 	-- [[ String Lookup Router ]] --
 	setmetatable(_R, { __index = function(t, k) return t.Strings[k]; end });
