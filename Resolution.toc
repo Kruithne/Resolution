@@ -10,7 +10,8 @@
 ## X-Localization: enUS
 
 Krutilities/Krutilities.lua
-Core.lua
+Bootstrap.lua
 Constants.lua
 UI.lua
 EventHandling.lua
+Core.lua

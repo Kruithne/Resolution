@@ -4,44 +4,22 @@
 	
 	https://github.com/Kruithne/Resolution
 
-	Resolution.lua - Core add-on core/functions.
+	Core.lua - Core add-on core/functions.
 ]]--
 
 do
-	-- [[ Local Optimization & Addon Setup ]] --
-	Resolution = {
-		RoutePool = {}, -- Contains references to all lookup pools.
-	};
-
-	local _R = Resolution; -- Reference to addon container.
-	local _K = Krutilities; -- Reference to Krutilities instance.
-
-	-- [[ Constant Route Look-up ]] --
-	setmetatable(_R, {
-		__index = function(t, k)
-			for i = 1, #t.RoutePool do
-				local node = t.RoutePool[key];
-				if node then return node; end
-			end
-		end
-	});
-
-	-- [[ Event Handler ]] --
+	-- [[ Register Event Hooks ]] --
 	_K.EventHandler(_R, {
 		["ADDON_LOADED"] = "OnAddonLoaded"
 	});
 
-	--[[
-		Resolution.Print
-		Output a message into chat, formatted for this add-on.
-
-			self - Reference to Resolution.
-			message - String to print to the chat.
-	]]--
-	_R.Print = function(self, message)
-		message = self.CHAT_NORMAL_COLOR:WrapTextInColorCode(message);
-		DEFAULT_CHAT_FRAME:AddMessage(self.CHAT_PREFIX:format(message));
-	end
+	-- [[ Register Addon Commands ]] --
+	_K.CommandHandler(_R, {
+		["RESOLUTION"] = {
+			commands = { "/resolution" },
+			handler = "OnChatCommand"
+		}
+	});
 
 	--[[
 		Resolution.Open
@@ -57,9 +35,9 @@ do
 				strata = "FULLSCREEN",
 				points = {point = "CENTER"},
 				name = "ResolutionFrame",
-				backdrop = self.GENERIC_FRAME_STYLE,
-				backdropColor = self.MAIN_BACKDROP_COLOR,
-				backdropBorderColor = self.MAIN_BACKDROP_COLOR
+				backdrop = self.DesignKits.GENERIC_FRAME_STYLE,
+				backdropColor = self.Palette.MAIN_BACKDROP_COLOR,
+				backdropBorderColor = self.Palette.MAIN_BACKDROP_COLOR
 			});
 
 			-- Create utility buttons, these will render from right to left.

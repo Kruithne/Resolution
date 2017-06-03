@@ -1,0 +1,108 @@
+warning: CRLF will be replaced by LF in Constants.lua.
+The file will have its original line endings in your working directory.
+warning: CRLF will be replaced by LF in Core.lua.
+The file will have its original line endings in your working directory.
+warning: CRLF will be replaced by LF in EventHandling.lua.
+The file will have its original line endings in your working directory.
+[1mdiff --git a/Core.lua b/Core.lua[m
+[1mindex 55e171d..e42369f 100644[m
+[1m--- a/Core.lua[m
+[1m+++ b/Core.lua[m
+[36m@@ -9,28 +9,27 @@[m
+ [m
+ do[m
+ 	-- [[ Local Optimization & Addon Setup ]] --[m
+[31m-	Resolution = {[m
+[31m-		RoutePool = {}, -- Contains references to all lookup pools.[m
+[31m-	};[m
+[32m+[m	[32mResolution = {};[m
+ [m
+ 	local _R = Resolution; -- Reference to addon container.[m
+[31m-	local _K = Krutilities; -- Reference to Krutilities instance.[m
+[32m+[m	[32mlocal _K = GetKrutilities("1.7"); -- Reference to Krutilities instance.[m
+ [m
+[31m-	-- [[ Constant Route Look-up ]] --[m
+[31m-	setmetatable(_R, {[m
+[31m-		__index = function(t, k)[m
+[31m-			for i = 1, #t.RoutePool do[m
+[31m-				local node = t.RoutePool[key];[m
+[31m-				if node then return node; end[m
+[31m-			end[m
+[31m-		end[m
+[31m-	});[m
+[32m+[m	[32m-- [[ String Lookup Router ]] --[m
+[32m+[m	[32msetmetatable(_R, { __index = function(t, k) return t.Strings[k]; end });[m
+ [m
+ 	-- [[ Event Handler ]] --[m
+ 	_K.EventHandler(_R, {[m
+ 		["ADDON_LOADED"] = "OnAddonLoaded"[m
+ 	});[m
+ [m
+[32m+[m	[32m-- [[ Command Handler ]] --[m
+[32m+[m	[32m_K.CommandHandler(_R, {[m
+[32m+[m		[32m["RESOLUTION"] = {[m
+[32m+[m			[32mcommands = { "/resolution" },[m
+[32m+[m			[32mhandler = "OnChatCommand"[m
+[32m+[m		[32m}[m
+[32m+[m	[32m});[m
+[32m+[m
+ 	--[[[m
+ 		Resolution.Print[m
+ 		Output a message into chat, formatted for this add-on.[m
+[36m@@ -39,7 +38,7 @@[m [mdo[m
+ 			message - String to print to the chat.[m
+ 	]]--[m
+ 	_R.Print = function(self, message)[m
+[31m-		message = self.CHAT_NORMAL_COLOR:WrapTextInColorCode(message);[m
+[32m+[m		[32mmessage = self.Palette.CHAT_NORMAL_COLOR:WrapTextInColorCode(message);[m
+ 		DEFAULT_CHAT_FRAME:AddMessage(self.CHAT_PREFIX:format(message));[m
+ 	end[m
+ [m
+[36m@@ -57,9 +56,9 @@[m [mdo[m
+ 				strata = "FULLSCREEN",[m
+ 				points = {point = "CENTER"},[m
+ 				name = "ResolutionFrame",[m
+[31m-				backdrop = self.GENERIC_FRAME_STYLE,[m
+[31m-				backdropColor = self.MAIN_BACKDROP_COLOR,[m
+[31m-				backdropBorderColor = self.MAIN_BACKDROP_COLOR[m
+[32m+[m				[32mbackdrop = self.DesignKits.GENERIC_FRAME_STYLE,[m
+[32m+[m				[32mbackdropColor = self.Palette.MAIN_BACKDROP_COLOR,[m
+[32m+[m				[32mbackdropBorderColor = self.Palette.MAIN_BACKDROP_COLOR[m
+ 			});[m
+ [m
+ 			-- Create utility buttons, these will render from right to left.[m
+[1mdiff --git a/EventHandling.lua b/EventHandling.lua[m
+[1mindex 280a3fa..fa25820 100644[m
+[1m--- a/EventHandling.lua[m
+[1m+++ b/EventHandling.lua[m
+[36m@@ -20,7 +20,7 @@[m [mdo[m
+ 		self:Open();[m
+ [m
+ 		-- Cache chat prefix.[m
+[31m-		local addonName = self.CHAT_HIGHLIGHT_COLOR:WrapTextInColorCode(self.ADDON_NAME);[m
+[32m+[m		[32mlocal addonName = self.Palette.CHAT_HIGHLIGHT_COLOR:WrapTextInColorCode(self.ADDON_NAME);[m
+ 		self.CHAT_PREFIX = self.CHAT_PREFIX:format(addonName);[m
+ [m
+ 		local version = GetAddOnMetadata(self.ADDON_NAME, "Version");[m
+[1mdiff --git a/Krutilities b/Krutilities[m
+[1mindex 30e8511..dc1f63c 160000[m
+[1m--- a/Krutilities[m
+[1m+++ b/Krutilities[m
+[36m@@ -1 +1 @@[m
+[31m-Subproject commit 30e8511720864fdf1eedd53ba799fc9ff7fd38d3[m
+[32m+[m[32mSubproject commit dc1f63cd2db714628736d3ae0848d792b1f709d8[m
+[1mdiff --git a/TODO b/TODO[m
+[1mindex 655c023..afc190e 100644[m
+[1m--- a/TODO[m
+[1m+++ b/TODO[m
+[36m@@ -1,4 +1,5 @@[m
+ - Main frame should capture mouse input.[m
+ - Main frame should respond to interface cancel binding.[m
+ - Add tooltips to corner buttons.[m
+[31m-- Localization[m
+\ No newline at end of file[m
+[32m+[m[32m- Localization[m
+[32m+[m[32m- Improve palette handling (match chat strings).[m
+\ No newline at end of file[m
+warning: CRLF will be replaced by LF in TODO.
+The file will have its original line endings in your working directory.
