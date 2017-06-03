@@ -8,16 +8,16 @@
 ]]--
 
 do
-	-- Addon container.
-	local _R = {
-		RoutePool = {}, -- Contains references to all look-up pools.	
+	-- [[ Local Optimization & Addon Setup ]] --
+	Resolution = {
+		RoutePool = {}, -- Contains references to all lookup pools.
 	};
 
-	-- Local Optimization
-	local _K = Krutilities;
+	local _R = Resolution; -- Reference to addon container.
+	local _K = Krutilities; -- Reference to Krutilities instance.
 
-	-- Constant route look-up.
-	setmetatable(_M, {
+	-- [[ Constant Route Look-up ]] --
+	setmetatable(_R, {
 		__index = function(t, k)
 			for i = 1, #t.RoutePool do
 				local node = t.RoutePool[key];
@@ -26,7 +26,7 @@ do
 		end
 	});
 
-	-- Create event handler.
+	-- [[ Event Handler ]] --
 	_K.EventHandler(_R, {
 		["ADDON_LOADED"] = "OnAddonLoaded"
 	});
@@ -163,7 +163,4 @@ do
 	_R.OnSettingsButtonClicked = function(self)
 		_R:Print("DEBUG: Settings button clicked!");
 	end
-
-	-- Expose Resolution to the global scope.
-	Resolution = _R;
 end
