@@ -25,6 +25,11 @@ setmetatable(_M, {
 	end
 });
 
+-- Create event handler.
+_K.EventHandler(_R, {
+	["ADDON_LOADED"] = "OnAddonLoaded"
+});
+
 --[[
 	Resolution.Print
 	Output a message into chat, formatted for this add-on.
@@ -157,8 +162,3 @@ end
 _R.OnSettingsButtonClicked = function(self)
 	_R:Print("DEBUG: Settings button clicked!");
 end
-
--- Event Handler
-_K.EventHandler(_R, {
-	["ADDON_LOADED"] = "OnAddonLoaded"
-});
