@@ -7,19 +7,23 @@
 	Resolution.lua - Core add-on core/functions.
 ]]--
 
-Resolution = {}; -- Primary add-on container.
+Resolution = {
+	RoutePool = {}, -- Contains references to all look-up pools.
+}; -- Primary add-on container.
 
 -- Local Optimization
 local _R = Resolution;
 local _K = Krutilities;
 
--- Constants and Colors
-_R.ADDON_NAME = "Resolution";
-_R.CHAT_PREFIX = "%s - %%s";
-_R.MAIN_BACKDROP_COLOR = CreateColor(0, 0, 0, 0.85);
-_R.GENERIC_FRAME_STYLE = { tile = true, tileSize = 32, edgeSize = 1, bgFile = "TILESET\\GENERIC\\Grey", edgeFile = "TILESET\\GENERIC\\Grey", insets = { left = 2, right = 2, top = 2, bottom = 2 }};
-_R.CHAT_HIGHLIGHT_COLOR = CreateColor(0.77, 0.12, 0.23, 1);
-_R.CHAT_NORMAL_COLOR = CreateColor(0.25, 0.78, 0.92, 1);
+-- Constant route look-up.
+setmetatable(_M, {
+	__index = function(t, k)
+		for i = 1, #t.RoutePool do
+			local node = t.RoutePool[key];
+			if node then return node; end
+		end
+	end
+});
 
 --[[
 	Resolution.Print

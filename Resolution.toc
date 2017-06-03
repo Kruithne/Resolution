@@ -11,3 +11,4 @@
 
 Krutilities/Krutilities.lua
 Resolution.lua
+Constants.lua
