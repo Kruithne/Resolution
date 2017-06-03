@@ -10,5 +10,5 @@
 ## X-Localization: enUS
 
 Krutilities/Krutilities.lua
-Resolution.lua
+Core.lua
 Constants.lua
