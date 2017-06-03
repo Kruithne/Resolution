@@ -162,14 +162,3 @@ end
 _K.EventHandler(_R, {
 	["ADDON_LOADED"] = "OnAddonLoaded"
 });
-
-
---[[local testFrame = CreateFrame("FRAME", "ResolutionFrame", UIParent);
-testFrame:SetPoint("CENTER", 0, 0);
-testFrame:SetWidth(64);
-testFrame:SetHeight(64);
-
-local testTex = testFrame:CreateTexture();
-testTex:SetTexture("Interface\\ICONS\\6BF_Retched_Blackrock");
-testTex:SetMask("Interface\\COMMON\\icon-shadow");
-testTex:SetAllPoints(testFrame);]]--
