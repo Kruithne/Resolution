@@ -55,7 +55,6 @@ do
 		token - The token currently being iterated over.
 	]]--
 	_R.ReplaceColourTokens = function(token)
-		print(token);
 		return "|c" .. _R.Palette[token]:GenerateHexColor() or token;
 	end
 
