@@ -16,6 +16,7 @@ do
 	_R.Strings = {
 		["ADDON_NAME"] = "Resolution",
 		["CHAT_PREFIX"] = "{Normal}<{Prefix}%s{Normal}> %%s",
+		["VERSION_FORMAT"] = "Version {Highlight}%s {Normal}revison {Highlight}%s {Normal}loaded!",
 	};
 
 	-- [[ Pattern Matching Expressions ]] --
