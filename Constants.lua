@@ -20,9 +20,9 @@ do
 
 	-- [[ Pre-constructed Colour Objects ]] --
 	_R.Palette = {
-		["MAIN_BACKDROP_COLOR"] = CreateColor(0, 0, 0, 0.85),
-		["CHAT_HIGHLIGHT_COLOR"] = CreateColor(0.77, 0.12, 0.23, 1),
-		["CHAT_NORMAL_COLOR"] = CreateColor(0.25, 0.78, 0.92, 1)
+		backdrop = CreateColor(0, 0, 0, 0.85),
+		highlight = CreateColor(0.77, 0.12, 0.23, 1),
+		normal = CreateColor(0.25, 0.78, 0.92, 1)
 	};
 
 	-- [[ Pre-constructed Frame Backdrops ]] --
