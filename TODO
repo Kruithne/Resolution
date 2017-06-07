@@ -1,5 +1,3 @@
 - Main frame should capture mouse input.
 - Main frame should respond to interface cancel binding.
-- Add tooltips to corner buttons.
 - Localization
-- Improve palette handling (match chat strings).

@@ -20,8 +20,7 @@ do
 		self:Open();
 
 		-- Cache chat prefix.
-		local addonName = self.Palette.CHAT_HIGHLIGHT_COLOR:WrapTextInColorCode(self.ADDON_NAME);
-		self.CHAT_PREFIX = self.CHAT_PREFIX:format(addonName);
+		self.CHAT_PREFIX = self:FormatColours(self.CHAT_PREFIX:format(self.ADDON_NAME));
 
 		local version = GetAddOnMetadata(self.ADDON_NAME, "Version");
 		self:Print(version .. " loaded!");
