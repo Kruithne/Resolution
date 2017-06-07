@@ -25,6 +25,18 @@ do
 	});
 
 	--[[
+		Resolution.Print
+		Output a message into chat, formatted for this add-on.
+
+			self - Reference to Resolution.
+			message - String to print to the chat.
+	]]--
+	_R.Print = function(self, message)
+		message = self.Palette.CHAT_NORMAL_COLOR:WrapTextInColorCode(message);
+		DEFAULT_CHAT_FRAME:AddMessage(self.CHAT_PREFIX:format(message));
+	end
+
+	--[[
 		Resolution.Open
 		Open the main panel of the add-on.
 
