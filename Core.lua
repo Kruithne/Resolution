@@ -65,24 +65,11 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.Open = function(self)
-		if not self.frameMain then
-			-- Generate the main UI frame.
-			self.frameMain = _K:Frame({
-				width = 900, height = 500,
-				strata = "FULLSCREEN",
-				points = {point = "CENTER"},
-				name = "ResolutionFrame",
-				backdrop = self.DesignKits.GENERIC_FRAME_STYLE,
-				backdropColor = self.Palette.Backdrop,
-				backdropBorderColor = self.Palette.Backdrop
-			});
-
-			-- Create utility buttons, these will render from right to left.
-			self:CreateCornerButton("$parentCloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
-			self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
+		if not self.hasLoaded then
+			self:InitializeInterface();
+		else
+			self.frameMain:Show();
 		end
-
-		self.frameMain:Show();
 	end
 
 	--[[
