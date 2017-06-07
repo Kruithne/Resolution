@@ -15,7 +15,7 @@ do
 	-- [[ Static Addon Strings ]] --
 	_R.Strings = {
 		["ADDON_NAME"] = "Resolution",
-		["CHAT_PREFIX"] = "{Normal}<{Highlight}%s{Normal}> %%s",
+		["CHAT_PREFIX"] = "{Normal}<{Prefix}%s{Normal}> %%s",
 	};
 
 	-- [[ Pattern Matching Expressions ]] --
@@ -26,8 +26,9 @@ do
 	-- [[ Pre-constructed Colour Objects ]] --
 	_R.Palette = {
 		Backdrop = CreateColor(0, 0, 0, 0.85),
-		Highlight = CreateColor(0.77, 0.12, 0.23, 1),
+		Prefix = CreateColor(0.77, 0.12, 0.23, 1),
 		Normal = CreateColor(0.25, 0.78, 0.92, 1),
+		Highlight = CreateColor(0.67, 0.83, 0.45),
 	};
 
 	-- [[ Pre-constructed Frame Backdrops ]] --
