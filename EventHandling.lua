@@ -60,4 +60,15 @@ do
 	_R.OnSettingsButtonClicked = function(self)
 		_R:Print("DEBUG: Settings button clicked!");
 	end
+
+	--[[
+		Resolution.OnChatCommand
+		Invoked when this add-ons chat command is used.
+
+			msg - User-input for the command.
+			editbox - The editbox used to enter the command.
+	]]--
+	_R.OnChatCommand = function(msg, editbox)
+		_R:Open();
+	end
 end
