@@ -3,3 +3,7 @@
 - Detect non-english clients and show a localization helper message.
 - Hardcore mode.
 - Flush data when closed.
+- Create grid view (paged)
+- Create bar overview
+- Add class overview
+- Add total percentage displays.
