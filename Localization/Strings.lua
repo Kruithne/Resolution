@@ -19,6 +19,7 @@ do
 		["ARTWORK_PATH"] = "Interface\\AddOns\\Resolution\\Artwork\\",
 		["CHAT_PREFIX"] = "{Normal}<{Prefix}%s{Normal}> %%s",
 
+		["LOAD_PROMPT"] = "%s is enabled, type {Highlight}/resolution{Normal} to open.",
 		["VERSION_FORMAT"] = "Successfully loaded version {Highlight}%s{Normal}!",
 
 		["ERR_ADDON_LOAD"] = "Unable to load {Highlight}%s{Normal}, aborting!",

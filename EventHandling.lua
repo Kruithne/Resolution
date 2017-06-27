@@ -22,6 +22,10 @@ do
 	_R.OnLoad = function(self)
 		-- Cache chat prefix.
 		self.CHAT_PREFIX = self:FormatColours(self.CHAT_PREFIX:format(self.ADDON_NAME));
+
+		-- Display load prompt.
+		self:Print(self.LOAD_PROMPT, self.ADDON_NAME);
+
 		self:Open(); -- DEBUG: Auto-load during development.
 	end
 
