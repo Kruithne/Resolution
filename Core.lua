@@ -32,9 +32,10 @@ do
 
 			self - Reference to Resolution.
 			message - String to print to the chat.
+			... - String formatting arguments.
 	]]--
-	_R.Print = function(self, message)
-		DEFAULT_CHAT_FRAME:AddMessage(self.CHAT_PREFIX:format(self:FormatColours(message)));
+	_R.Print = function(self, message, ...)
+		DEFAULT_CHAT_FRAME:AddMessage(self.CHAT_PREFIX:format(self:FormatColours(message:format(...))));
 	end
 
 	--[[

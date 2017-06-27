@@ -28,7 +28,7 @@ do
 		local versionString = GetAddOnMetadata(self.ADDON_NAME, "Version");
 		local version, revision = strsplit(".", versionString);
 
-		self:Print(self.VERSION_FORMAT:format(version, revision));
+		self:Print(self.VERSION_FORMAT, version, revision);
 	end
 
 	--[[
