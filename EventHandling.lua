@@ -46,7 +46,6 @@ do
 				end
 			elseif self.loadState == 2 then
 				-- Loading has completed.
-				self:Print("Loading COMPLETE!");
 				self:HideLoadFrame();
 				self.loadState = 0;
 			end
