@@ -117,10 +117,7 @@ do
 			yield();
 		end
 
-		local versionString = GetAddOnMetadata(_R.ADDON_NAME, "Version");
-		local version, revision = strsplit(".", versionString);
-		_R:Print(self.VERSION_FORMAT, version, revision);
-
+		_R:Print(self.VERSION_FORMAT, GetAddOnMetadata(_R.ADDON_NAME, "Version"));
 		_R.loadState = 2; -- Set load state to 2 (complete).
 	end
 
