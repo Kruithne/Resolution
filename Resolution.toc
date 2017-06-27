@@ -3,7 +3,7 @@
 ## Notes: Comprehensive Completionist Overview
 ## Author: Kruithne
 ## Version: 1.1
-## SavedVariables: ResolutionDataDevExport, ResolutionDataCharacters
+## SavedVariables: ResolutionDataDevExport
 
 ## X-Curse-Project-ID: resolution
 ## X-GitHub-Repo: Kruithne/Resolution
