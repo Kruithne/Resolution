@@ -21,6 +21,8 @@ do
 
 		["VERSION_FORMAT"] = "Version {Highlight}%s {Normal}revison {Highlight}%s {Normal}loaded!",
 
+		["ERR_ADDON_LOAD"] = "Unable to load {Highlight}%s{Normal}, aborting!",
+
 		["LOADING_TEXT_INIT"] = "Initializing, please wait...",
 		["LOADING_TEXT_DATA"] = "Loading data...",
 		["LOADING_TEXT_TOYS"] = "Checking toy collection...",

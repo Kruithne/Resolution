@@ -109,10 +109,18 @@ do
 	]]--
 	_L.RequireAddOn = function(self, name)
 		if not IsAddOnLoaded(name) then
+			-- Attempt to enable addon for this character.
+			local _, _, _, canLoad, canLoadReason = GetAddOnInfo(name);
+			if canLoadReason == "DISABLED" then
+				EnableAddOn(name, UnitName("player"));
+			end
+
+			-- Attempt to load the add-on.
 			local loaded, reason = LoadAddOn(name);
 			if not loaded then
-				-- Trigger a client error.
-				assert(false, "Unload to load" .. name .. ": " .. reason);
+				-- Unable to load; show error and abort.
+				_R:Print(_R.ERR_ADDON_LOAD, name);
+				_R:Close();
 			end
 		end
 	end
