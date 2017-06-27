@@ -9,6 +9,7 @@
 do
 	-- [[ Local Optimization ]] --
 	local _R = Resolution;
+	local select = select;
 	local yield = coroutine.yield;
 	local co_create = coroutine.create;
 
@@ -27,6 +28,26 @@ do
 
 				-- Initiate default storage containers.
 				ResolutionDataCharacters = ResolutionDataCharacters or {};
+			end,
+
+			-- Collection: Characters
+			function(self)
+				yield(self.LOADING_TEXT_CHAR);
+				local strPlayer = "player";
+
+				local playerLevel = UnitLevel(strPlayer);
+				local charStore = ResolutionDataCharacters;
+				local classIndex = select(3, UnitClass(strPlayer));
+				local existingChar = charStore[classIndex];
+
+				if not existingChar or existingChar.level < playerLevel then
+
+					charStore[classIndex] = {
+						name = UnitName(strPlayer),
+						level = playerLevel,
+						race = select(2, UnitRace(strPlayer))
+					};
+				end
 			end,
 
 			-- Collection: Toys
