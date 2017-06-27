@@ -1,3 +1,5 @@
 - Main frame should capture mouse input.
 - Main frame should respond to interface cancel binding.
-- Localization
+- Detect non-english clients and show a localization helper message.
+- Hardcore mode.
+- Flush data when closed.

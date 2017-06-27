@@ -3,6 +3,7 @@
 ## Notes: Comprehensive Completionist Overview
 ## Author: Kruithne
 ## Version: 1.1
+## SavedVariables: ResolutionDataDevExport, ResolutionDataCharacters
 
 ## X-Curse-Project-ID: resolution
 ## X-GitHub-Repo: Kruithne/Resolution
@@ -10,8 +11,11 @@
 ## X-Localization: enUS
 
 Krutilities/Krutilities.lua
+
 Bootstrap.lua
 Constants.lua
 UI.lua
 EventHandling.lua
+Loader.lua
+Localization/Strings.lua
 Core.lua

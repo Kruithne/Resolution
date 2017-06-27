@@ -8,7 +8,10 @@
 ]]--
 
 do
+	-- [[ Local Optimization ]] --
 	local _R = Resolution;
+	local co_status = coroutine.status;
+	local co_resume = coroutine.resume;
 
 	--[[
 		Resolution.OnLoad
@@ -26,6 +29,34 @@ do
 		local version, revision = strsplit(".", versionString);
 
 		self:Print(self.VERSION_FORMAT:format(version, revision));
+	end
+
+	--[[
+		Resolution.OnUpdate
+		Invoked on every frame.
+
+			self - Reference to Resolution.
+			elapsed - Seconds since the last frame.
+	]]--
+	_R.OnUpdate = function(self, elapsed)
+		--	Load states:
+		--		0 = Inactive
+		--		1 = Loading
+		--		2 = Complete
+		if self.loadState > 0 then
+			if self.loadState == 1 then
+				-- Loading is in process.
+				local success, text = co_resume(self.loaderThread, self);
+				if success and text then
+					self.loadBar:SetBarText(text);
+				end
+			elseif self.loadState == 2 then
+				-- Loading has completed.
+				self:Print("Loading COMPLETE!");
+				self:HideLoadFrame();
+				self.loadState = 0;
+			end
+		end
 	end
 
 	--[[

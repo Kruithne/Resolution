@@ -8,12 +8,14 @@
 ]]--
 
 do
+	-- [[ Local Optimization ]] --
 	local _R = Resolution; -- Reference to addon container.
-	local _K = GetKrutilities(1.7); -- Reference to Krutilities instance.
+	local _K = _R.refKrutilities; -- Reference to Krutilities instance.
 
 	-- [[ Register Event Hooks ]] --
 	_K.EventHandler(_R, {
-		["ADDON_LOADED"] = "OnAddonLoaded"
+		["ADDON_LOADED"] = "OnAddonLoaded",
+		["FRAME_UPDATE"] = "OnUpdate",
 	});
 
 	-- [[ Register Addon Commands ]] --
@@ -65,11 +67,18 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.Open = function(self)
-		if not self.hasLoaded then
-			self:InitializeInterface();
-		else
-			self.frameMain:Show();
+		if self.frameMain and self.frameMain:IsVisible() then
+			-- Addon is already open.
+			return;
 		end
+
+		self:ShowMainFrame(); -- Construct/show foundation frame.
+		self:ShowLoadFrame(); -- Construct/show loading frame.
+
+		self.loadBar:SetBarProgress(0); -- Reset loading bar progress.
+		self.loadBar:SetBarText(self.LOADING_TEXT_INIT); -- Base loading text.
+
+		self.Loader:Start();
 	end
 
 	--[[
@@ -79,8 +88,7 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.Close = function(self)
-		if self.frameMain then
-			self.frameMain:Hide();
-		end
+		self:HideMainFrame();
+		self.Loader:Stop();
 	end
 end
