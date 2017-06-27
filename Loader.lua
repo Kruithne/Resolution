@@ -24,6 +24,9 @@ do
 				-- Bulk data is stored in ResolutionData addon for memory optimization.
 				yield(self.LOADING_TEXT_DATA);
 				self.Loader:RequireAddOn("ResolutionData");
+
+				-- Initiate default storage containers.
+				ResolutionDataCharacters = ResolutionDataCharacters or {};
 			end,
 
 			-- Collection: Toys
