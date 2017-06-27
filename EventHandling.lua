@@ -20,15 +20,9 @@ do
 			self - Reference to Resolution
 	]]--
 	_R.OnLoad = function(self)
-		self:Open();
-
 		-- Cache chat prefix.
 		self.CHAT_PREFIX = self:FormatColours(self.CHAT_PREFIX:format(self.ADDON_NAME));
-
-		local versionString = GetAddOnMetadata(self.ADDON_NAME, "Version");
-		local version, revision = strsplit(".", versionString);
-
-		self:Print(self.VERSION_FORMAT, version, revision);
+		self:Open(); -- DEBUG: Auto-load during development.
 	end
 
 	--[[
