@@ -8,12 +8,54 @@
 ]]--
 
 do
+	-- [[ Local Optimization ]] --
 	local _R = Resolution; -- Reference to addon container.
 	local _K = _R.refKrutilities; -- Reference to Krutilities instance.
 
 	local min = math.min;
 	local max = math.max;
 	local ceil = math.ceil;
+	local t_remove = table.remove;
+	local t_insert = table.insert;
+
+	-- [[ Design Constants ]] --
+	local GRID_ICON_MARGIN = 15; -- Distance between grid frame sections.
+	local GRID_ICON_SIZE = 36; -- Width/height of the grid frame icon regions.
+
+	-- This is the mark-up used for rendering icons. Given the volume of 
+	-- these rendered, we re-use the same table to avoid excessive garbage.
+	local markup_gridIcon = {
+		size = GRID_ICON_SIZE,
+		textures = {
+			{
+				-- Base shadow.
+				subLevel = 5,
+				setAllPoints = true,
+				texture = _R.ARTWORK_PATH .. "UI-GridIcon",
+				texCoord = {0.71875, 1, 0, 0.5625},
+			},
+			{
+				-- Texture
+				texture = "Interface\\ICONS\\inv_misc_questionmark",
+				subLevel = 6,
+				desaturate = true,
+				injectSelf = "Icon",
+				points = {
+					{ point = "TOPLEFT", x = 4, y = -4 },
+					{ point = "BOTTOMRIGHT", x = -4, y = 4 }
+				}
+			},
+			{
+				-- Overlay
+				texture = _R.ARTWORK_PATH .. "UI-GridIcon",
+				subLevel = 7,
+				setAllPoints = true,
+				injectSelf = "Overlay",
+				texCoord = {0, 0.28125, 0, 0.5625},
+				color = {1, 0, 0}
+			}
+		}
+	};
 
 	--[[
 		Resolution.ShowMainFrame
@@ -261,5 +303,112 @@ do
 
 		-- Keep track of the last button we spawned to assist with positioning.
 		self.lastCornerButton = self.frameMain:SpawnFrame(spawnData);
+	end
+
+	--[[
+		Resolution.CreateGridGrame
+		Create a grid frame.
+
+			self - Reference to Resolution
+	]]--
+	_R.CreateGridFrame = function(self)
+		return self.frameMain:SpawnFrame({
+			points = {
+				{ point = "TOPLEFT", x = 20, y = -40 },
+				{ point = "BOTTOMRIGHT", x = -20, y = 20 }
+			},
+			textures = {
+				texture = "InvalidTexturePath",
+				setAllPoints = true
+			},
+			data = {
+				_sections = {}, -- References to each section in this grid.
+				_dirtySections = {}, -- Section garbage is stored per-grid.
+				_dirtyIcons = {}, -- Icon garbage is stored per-grid.
+
+				-- Helper functions.
+				CreateSection = self.GridFrame_CreateSection,
+			}
+		});
+	end
+
+	--[[
+		Resolution.GridFrame_CreateSection
+		Creates a new grid frame section.
+
+			self - Reference to the grid frame region.
+	]]--
+	_R.GridFrame_CreateSection = function(self, name)
+		local section = nil;
+		if #self._dirtySections > 0 then
+			-- Grab an old section out of the garbage.
+			section = t_remove(self._dirtySections, 1);
+		else
+			-- Create a new shiny text object.
+			section = self:SpawnFrame({
+				size = 1,
+				texts = {
+					text = name,
+					injectSelf = "Text",
+					points = { point = "TOPLEFT" },
+					inherit = "Game11Font_o1"
+				},
+				data = {
+					_icons = {}, -- References to each icon in this section.
+				}
+			});
+		end
+
+		-- Anchoring
+		local previous = self._previousSection;
+		if previous then
+			-- Previous section exists, anchor to it.
+			section:SetPoint("LEFT", previous, "RIGHT");
+		else
+			-- This is the first section, default anchor.
+			section:SetPoint("TOPLEFT", self, "TOPLEFT");
+		end
+
+		self._previousSection = section; -- Set reference as previous entry.
+		t_insert(self._sections, section); -- Store reference in section table.
+
+		return section;
+	end
+
+	--[[
+		Resolution.GridFrame_AddIcon
+		Adds an icon to the grid frame section.
+
+			self - Reference to the section region.
+	]]--
+	_R.GridFrame_AddIcon = function(self, section)
+		local grid = section:GetParent();
+		local icon = nil;
+
+		if #grid._dirtyIcons > 0 then
+			-- Grab an old icon from the grid garbage.
+			icon = t_remove(grid._dirtyIcons, 1);
+		else
+			-- Create a new shiny icon.
+			icon = section:SpawnFrame(markup_gridIcon);
+		end
+
+		-- Anchoring
+		local previous = section._previousIcon;
+		if previous then
+			-- Previous icon exists, anchor to it.
+			icon:SetPoint("LEFT", previous, "RIGHT");
+		else
+			-- No previous icon exists, anchor to section.
+			icon:SetPoint("TOPLEFT", section, "TOPLEFT", 5, -GRID_ICON_MARGIN);
+		end
+
+		section._previousIcon = icon; -- Set reference as previous entry.
+		t_insert(section._icons, icon); -- Store reference in icon table.
+
+		-- Recalculate frame sizing.
+		section:SetWidth((#section._icons * GRID_ICON_SIZE) + GRID_ICON_MARGIN);
+
+		return icon;
 	end
 end

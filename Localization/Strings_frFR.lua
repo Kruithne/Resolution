@@ -8,7 +8,7 @@
 ]]--
 
 if GetLocale() == "frFR" then
-	Resolution:ApplyLocalization = {
+	Resolution:ApplyLocalization({
 		["LOADING_TEXT_INIT"] = "Initialisation, veuillez patienter...",
-	};
+	});
 end

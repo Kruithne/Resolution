@@ -52,7 +52,35 @@ do
 				-- Loading has completed.
 				self:HideLoadFrame();
 				self.loadState = 0;
+				self:OnLoadComplete();
 			end
+		end
+	end
+
+	--[[
+		Resolution.OnloadComplete
+		Invoked once the loading process has completed.
+
+			self - Reference to Resolution.
+	]]--
+	_R.OnLoadComplete = function(self)
+		--self:RenderTestGrid();
+
+		local grid = self:CreateGridFrame();
+
+		local sectionA = grid:CreateSection("TestA");
+		for i = 1, 3 do
+			self:GridFrame_AddIcon(sectionA);
+		end
+
+		local sectionB = grid:CreateSection("TestB");
+		for i = 1, 6 do
+			self:GridFrame_AddIcon(sectionB);
+		end
+		
+		local sectionC = grid:CreateSection("TestC");
+		for i = 1, 9 do
+			self:GridFrame_AddIcon(sectionC);
 		end
 	end
 
