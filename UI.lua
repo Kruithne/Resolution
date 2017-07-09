@@ -91,6 +91,7 @@ do
 			self:CreateCornerButton("Settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
 			self.frameInterface = self.frameMain:SpawnFrame({
+				setAllPoints = true,
 				frames = {
 					{
 						type = "PlayerModel",
