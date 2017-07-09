@@ -124,6 +124,7 @@ do
 			self.frameInterface.BackgroundModel:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
 		end
 
+		self.frameInterface:Show();
 		self.frameMain.ButtonSettings:Show();
 	end
 
