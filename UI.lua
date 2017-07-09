@@ -98,7 +98,6 @@ do
 						type = "PlayerModel",
 						injectSelf = "BackgroundModel",
 						strata = "HIGH",
-						model = "Interface\\Glues\\Models\\UI_Human\\UI_Human.m2",
 						points = {
 							{ point = "TOPLEFT" },
 							{ point = "BOTTOMRIGHT", x = -1 } -- Model over-clips by 1 pixel, for some reason.
@@ -121,6 +120,12 @@ do
 				}
 			});
 		end
+
+		-- Background model needs to be reset every time.
+		local model = self.frameInterface.BackgroundModel;
+		model:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
+		model.isCameraSet = false;
+		model.isNotFirstFrame = false;
 
 		self.frameInterface:Show();
 		self.frameMain.ButtonSettings:Show();
