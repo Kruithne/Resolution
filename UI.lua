@@ -129,6 +129,12 @@ do
 								end
 							end
 						}
+					},
+					{
+						type = "PlayerModel",
+						injectSelf = "PlayerModel",
+						size = 400,
+						points = { point = "CENTER", x = -17, y = -25 }
 					}
 				},
 				textures = {
@@ -143,6 +149,9 @@ do
 			-- Set class icon for the current class.
 			local _, className = UnitClass("player");
 			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
+
+			-- Set the player model to the actual player.
+			self.frameInterface.PlayerModel:SetUnit(UNIT_PLAYER);
 		end
 
 		-- Background model needs to be reset every time.
