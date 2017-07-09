@@ -41,7 +41,6 @@ do
 				local existingChar = charStore[classIndex];
 
 				if not existingChar or existingChar.level < playerLevel then
-
 					charStore[classIndex] = {
 						name = UnitName(strPlayer),
 						level = playerLevel,
