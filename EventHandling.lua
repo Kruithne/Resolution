@@ -64,32 +64,7 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.OnLoadComplete = function(self)
-		local background = self.frameMain:SpawnFrame({
-			type = "PlayerModel",
-			name = "Test",
-			strata = "HIGH",
-			points = {
-				{ point = "TOPLEFT" },
-				{ point = "BOTTOMRIGHT", x = -1 }
-			},
-			scripts = {
-				OnUpdate = function(self)
-					-- Model camera needs to be set after the first frame.
-					if not self.isCameraSet then
-						if not self.isNotFirstFrame then
-							self.isNotFirstFrame = true;
-							return;
-						end
-
-						self:SetCamera(0);
-						self.isCameraSet = true;
-					end
-				end
-			}
-		});
-
-		background:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
-		--background:SetCamera(0);
+		self:ShowUI();
 	end
 
 	--[[

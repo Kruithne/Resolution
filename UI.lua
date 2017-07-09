@@ -90,7 +90,36 @@ do
 		if not self.frameInterface then
 			self:CreateCornerButton("settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
-			-- ToDo: Create interface container.
+			self.frameInterface = self.frameMain:SpawnFrame({
+				frames = {
+					{
+						type = "PlayerModel",
+						injectSelf = "BackgroundModel",
+						strata = "HIGH",
+						points = {
+							{ point = "TOPLEFT" },
+							{ point = "BOTTOMRIGHT", x = -1 } -- Model over-clips by 1 pixel, for some reason.
+						},
+						scripts = {
+							OnUpdate = function(self)
+								-- Model camera needs to be set after the first frame.
+								if not self.isCameraSet then
+									if not self.isNotFirstFrame then
+										self.isNotFirstFrame = true;
+										return;
+									end
+
+									self:SetCamera(0);
+									self.isCameraSet = true;
+								end
+							end
+						}
+					}
+				}
+			});
+
+			-- Temp, abstract in Krutilities.
+			self.frameInterface.BackgroundModel:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
 		end
 
 		self.frameButtonSettings:Show();
