@@ -80,6 +80,8 @@ do
 		if self.frameMain then
 			self.frameMain:Hide();
 		end
+
+		self:HideUI();
 	end
 
 	--[[
