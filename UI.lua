@@ -98,6 +98,7 @@ do
 						type = "PlayerModel",
 						injectSelf = "BackgroundModel",
 						strata = "HIGH",
+						model = "Interface\\Glues\\Models\\UI_Human\\UI_Human.m2",
 						points = {
 							{ point = "TOPLEFT" },
 							{ point = "BOTTOMRIGHT", x = -1 } -- Model over-clips by 1 pixel, for some reason.
@@ -119,9 +120,6 @@ do
 					}
 				}
 			});
-
-			-- Temp, abstract in Krutilities.
-			self.frameInterface.BackgroundModel:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
 		end
 
 		self.frameInterface:Show();
