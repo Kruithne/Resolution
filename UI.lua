@@ -65,7 +65,6 @@ do
 
 			-- Create utility buttons, these will render from right to left.
 			self:CreateCornerButton("CloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
-			--self:CreateCornerButton("SettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
 		end
 
 		self.frameMain:Show();
@@ -88,7 +87,13 @@ do
 		Show/construct the region containing all main UI components.
 	]]--
 	_R.ShowUI = function(self)
-		-- ToDo: Make me.
+		if not self.frameInterface then
+			self:CreateCornerButton("SettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
+
+			-- ToDo: Create interface container.
+		end
+
+		self.SettingsButton:Show();
 	end
 
 	--[[
@@ -99,6 +104,7 @@ do
 	]]--
 	_R.HideUI = function(self)
 		if self.frameInterface then
+			self.SettingsButton:Hide();
 			self.frameInterface:Hide();
 		end
 	end
