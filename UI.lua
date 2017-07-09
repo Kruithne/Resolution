@@ -147,7 +147,7 @@ do
 			});
 
 			-- Set class icon for the current class.
-			local _, className = UnitClass("player");
+			local _, className = UnitClass(UNIT_PLAYER);
 			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
 
 			-- Set the player model to the actual player.
