@@ -64,7 +64,7 @@ do
 			});
 
 			-- Create utility buttons, these will render from right to left.
-			self:CreateCornerButton("close", "UI-CloseButton", self.OnCloseButtonClicked);
+			self:CreateCornerButton("Close", "UI-CloseButton", self.OnCloseButtonClicked);
 		end
 
 		self.frameMain:Show();
@@ -88,7 +88,7 @@ do
 	]]--
 	_R.ShowUI = function(self)
 		if not self.frameInterface then
-			self:CreateCornerButton("settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
+			self:CreateCornerButton("Settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
 			self.frameInterface = self.frameMain:SpawnFrame({
 				frames = {
