@@ -64,7 +64,7 @@ do
 			});
 
 			-- Create utility buttons, these will render from right to left.
-			self:CreateCornerButton("CloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
+			self:CreateCornerButton("close", "UI-CloseButton", self.OnCloseButtonClicked);
 		end
 
 		self.frameMain:Show();
@@ -88,12 +88,12 @@ do
 	]]--
 	_R.ShowUI = function(self)
 		if not self.frameInterface then
-			self:CreateCornerButton("SettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
+			self:CreateCornerButton("settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
 			-- ToDo: Create interface container.
 		end
 
-		self.SettingsButton:Show();
+		self.frameButtonSettings:Show();
 	end
 
 	--[[
@@ -104,7 +104,7 @@ do
 	]]--
 	_R.HideUI = function(self)
 		if self.frameInterface then
-			self.SettingsButton:Hide();
+			self.frameButtonSettings:Hide();
 			self.frameInterface:Hide();
 		end
 	end
@@ -295,7 +295,7 @@ do
 	_R.CreateCornerButton = function(self, name, icon, handler)
 		local spawnData = {
 			size = 32,
-			injectSelf = name,
+			injectSelf = "frameButton" .. name,
 			type = "BUTTON",
 			scripts = { OnClick = handler },
 			subLevel = 7,
