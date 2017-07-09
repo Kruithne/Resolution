@@ -122,7 +122,7 @@ do
 			self.frameInterface.BackgroundModel:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
 		end
 
-		self.frameButtonSettings:Show();
+		self.frameMain.ButtonSettings:Show();
 	end
 
 	--[[
@@ -133,7 +133,7 @@ do
 	]]--
 	_R.HideUI = function(self)
 		if self.frameInterface then
-			self.frameButtonSettings:Hide();
+			self.frameMain.ButtonSettings:Hide();
 			self.frameInterface:Hide();
 		end
 	end
@@ -324,7 +324,7 @@ do
 	_R.CreateCornerButton = function(self, name, icon, handler)
 		local spawnData = {
 			size = 32,
-			injectSelf = "frameButton" .. name,
+			injectSelf = "Button" .. name,
 			type = "BUTTON",
 			scripts = { OnClick = handler },
 			subLevel = 7,
