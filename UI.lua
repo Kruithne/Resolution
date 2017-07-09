@@ -156,7 +156,7 @@ do
 			};
 
 			self.loadFrame = self.frameMain:SpawnFrame({
-				injectSelf = "loadFrame",
+				injectSelf = "LoadFrame",
 				subLevel = 6,
 				strata = "HIGH",
 				setAllPoints = true,
