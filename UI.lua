@@ -20,11 +20,22 @@ do
 	local t_remove = table.remove;
 	local t_insert = table.insert;
 
+	local UnitFactionGroup = UnitFactionGroup;
+
 	-- [[ Design Constants ]] --
 	local GRID_SECTION_MARGIN = 15; -- Distance between grid frame sections.
 	local GRID_SECTION_MARGIN_TOTAL = GRID_SECTION_MARGIN * 2; -- Total margin size for sections.
 	local GRID_ICON_SIZE = 36; -- Width/height of the grid frame icon regions.
 	local GRID_ROW_HEIGHT = 20; -- Height of a grid row, not including icon heights.
+
+	-- [[ Local Strings ]] --
+	local BACK_MODEL_PREFIX = "Interface\\Glues\\Models\\";
+	local BACK_MODEL_ALLIANCE = "UI_Human\\UI_Human.m2";
+	local BACK_MODEL_HORDE = "UI_Horde\\UI_Horde.m2";
+	local BACK_MODEL_NEUTRAL = "UI_Pandaren\\UI_Pandaren.m2";
+	local UNIT_FACTION_ALLIANCE = "Alliance";
+	local UNIT_FACTION_HORDE = "Horde";
+	local UNIT_PLAYER = "player";
 
 	--[[
 		Resolution.ShowMainFrame
@@ -125,10 +136,21 @@ do
 
 		-- Background model needs to be reset every time.
 		local model = self.frameInterface.BackgroundModel;
-		model:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
 		model.isCameraSet = false;
 		model.isNotFirstFrame = false;
 
+		local modelPath = BACK_MODEL_NEUTRAL;
+		local playerFaction = UnitFactionGroup(UNIT_PLAYER);
+
+		if playerFaction == UNIT_FACTION_ALLIANCE then
+			modelPath = BACK_MODEL_ALLIANCE;
+		elseif playerFaction == UNIT_FACTION_HORDE then
+			modelPath = BACK_MODEL_HORDE;
+		end
+
+		model:SetModel(BACK_MODEL_PREFIX .. modelPath);
+
+		-- Show that which needs showing.
 		self.frameInterface:Show();
 		self.frameMain.ButtonSettings:Show();
 	end
