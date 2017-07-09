@@ -64,8 +64,8 @@ do
 			});
 
 			-- Create utility buttons, these will render from right to left.
-			self:CreateCornerButton("$parentCloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
-			--self:CreateCornerButton("$parentSettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
+			self:CreateCornerButton("CloseButton", "UI-CloseButton", self.OnCloseButtonClicked);
+			--self:CreateCornerButton("SettingsButton", "UI-SettingsButton", self.OnSettingsButtonClicked);
 		end
 
 		self.frameMain:Show();
@@ -289,7 +289,7 @@ do
 	_R.CreateCornerButton = function(self, name, icon, handler)
 		local spawnData = {
 			size = 32,
-			name = name,
+			injectSelf = name,
 			type = "BUTTON",
 			scripts = { OnClick = handler },
 			subLevel = 7,
