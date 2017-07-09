@@ -24,7 +24,7 @@ do
 		Prefix = CreateColor(0.77, 0.12, 0.23, 1),
 		Normal = CreateColor(0.25, 0.78, 0.92, 1),
 		Highlight = CreateColor(0.67, 0.83, 0.45),
-		BarGeneric = CreateColor(0.25, 0.65, 0.95, 1),
+		BarGeneric = CreateColor(0.12, 0.32, 0.47, 1),
 		BarBackdrop = CreateColor(1, 1, 1, 0.1),
 		White = CreateColor(1, 1, 1, 1),
 		Transparent = CreateColor(0, 0, 0, 0),
