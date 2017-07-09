@@ -92,6 +92,7 @@ do
 
 			self.frameInterface = self.frameMain:SpawnFrame({
 				setAllPoints = true,
+				injectSelf = "Container",
 				frames = {
 					{
 						type = "PlayerModel",
