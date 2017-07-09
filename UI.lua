@@ -130,8 +130,19 @@ do
 							end
 						}
 					}
+				},
+				textures = {
+					{
+						injectSelf = "ClassIcon",
+						size = 90,
+						points = { point = "TOPLEFT", x = 15, y = -15 }
+					}
 				}
 			});
+
+			-- Set class icon for the current class.
+			local _, className = UnitClass("player");
+			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
 		end
 
 		-- Background model needs to be reset every time.
