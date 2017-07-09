@@ -15,47 +15,16 @@ do
 	local min = math.min;
 	local max = math.max;
 	local ceil = math.ceil;
+	local floor = math.floor;
+	local mod = math.fmod;
 	local t_remove = table.remove;
 	local t_insert = table.insert;
 
 	-- [[ Design Constants ]] --
-	local GRID_ICON_MARGIN = 15; -- Distance between grid frame sections.
+	local GRID_SECTION_MARGIN = 15; -- Distance between grid frame sections.
+	local GRID_SECTION_MARGIN_TOTAL = GRID_SECTION_MARGIN * 2; -- Total margin size for sections.
 	local GRID_ICON_SIZE = 36; -- Width/height of the grid frame icon regions.
-
-	-- This is the mark-up used for rendering icons. Given the volume of 
-	-- these rendered, we re-use the same table to avoid excessive garbage.
-	local markup_gridIcon = {
-		size = GRID_ICON_SIZE,
-		textures = {
-			{
-				-- Base shadow.
-				subLevel = 5,
-				setAllPoints = true,
-				texture = _R.ARTWORK_PATH .. "UI-GridIcon",
-				texCoord = {0.71875, 1, 0, 0.5625},
-			},
-			{
-				-- Texture
-				texture = "Interface\\ICONS\\inv_misc_questionmark",
-				subLevel = 6,
-				desaturate = true,
-				injectSelf = "Icon",
-				points = {
-					{ point = "TOPLEFT", x = 4, y = -4 },
-					{ point = "BOTTOMRIGHT", x = -4, y = 4 }
-				}
-			},
-			{
-				-- Overlay
-				texture = _R.ARTWORK_PATH .. "UI-GridIcon",
-				subLevel = 7,
-				setAllPoints = true,
-				injectSelf = "Overlay",
-				texCoord = {0, 0.28125, 0, 0.5625},
-				color = {1, 0, 0}
-			}
-		}
-	};
+	local GRID_ROW_HEIGHT = 20; -- Height of a grid row, not including icon heights.
 
 	--[[
 		Resolution.ShowMainFrame
@@ -68,12 +37,30 @@ do
 			-- Generate the main UI frame.
 			self.frameMain = _K:Frame({
 				width = 900, height = 500,
-				strata = "FULLSCREEN",
+				strata = "DIALOG",
 				points = {point = "CENTER"},
 				name = "ResolutionFrame",
-				backdrop = self.DesignKits.GENERIC_FRAME_STYLE,
-				backdropColor = self.Palette.Backdrop,
-				backdropBorderColor = self.Palette.Backdrop
+			});
+
+			-- Apply border overlay.
+			self.frameMain:SpawnFrame({
+				setAllPoints = true,
+				injectSelf = "Border",
+				backdrop = self.DesignKits.ETCHED_FRAME_STYLE,
+				backdropColor = self.Palette.Transparent,
+				backdropBorderColor = self.Palette.EtchedBorder
+			});
+
+			-- Apply frame shadow.
+			self.frameMain:SpawnFrame({
+				width = 924,
+				height = 520,
+				strata = "HIGH",
+				injectSelf = "Shadow",
+				textures = {
+					texture = self.ARTWORK_PATH .. "UI-BackdropShadow",
+					texCoord = {0, 0.90234375, 0, 0.51171875},
+				}
 			});
 
 			-- Create utility buttons, these will render from right to left.
@@ -97,6 +84,26 @@ do
 	end
 
 	--[[
+		Resolution.ShowUI
+		Show/construct the region containing all main UI components.
+	]]--
+	_R.ShowUI = function(self)
+		-- ToDo: Make me.
+	end
+
+	--[[
+		Resolution.HideUI
+		Hide the region containing all main UI components.
+
+			self - Reference to Resolution.
+	]]--
+	_R.HideUI = function(self)
+		if self.frameInterface then
+			self.frameInterface:Hide();
+		end
+	end
+
+	--[[
 		Resolution.ShowLoadFrame
 		Show the loading frame, constructing it if needed.
 
@@ -116,10 +123,8 @@ do
 			self.loadFrame = self.frameMain:SpawnFrame({
 				injectSelf = "loadFrame",
 				subLevel = 6,
-				points = {
-					{ point = "TOPLEFT", relativePoint = "TOPLEFT", y = -3, x = 3 },
-					{ point = "BOTTOMRIGHT", relativePoint = "BOTTOMRIGHT", y = 3, x = -3 }
-				},
+				strata = "HIGH",
+				setAllPoints = true,
 				textures = {
 					{
 						texture = self.ARTWORK_PATH .. "UI-LoadingBackground",
@@ -311,104 +316,170 @@ do
 
 			self - Reference to Resolution
 	]]--
-	_R.CreateGridFrame = function(self)
-		return self.frameMain:SpawnFrame({
+	_R.CreateGridFrame = function(self, name)
+		local _K = _K;
+
+		local scrollFrame = self.frameMain:SpawnFrame({
+			parentName = name,
+			type = "ScrollFrame",
 			points = {
 				{ point = "TOPLEFT", x = 20, y = -40 },
 				{ point = "BOTTOMRIGHT", x = -20, y = 20 }
-			},
+			}
+		});
+
+		local frame = scrollFrame:SpawnFrame({
+			injectSelf = "InnerFrame",
+			width = scrollFrame:GetWidth(),
+			height = scrollFrame:GetHeight(),
 			textures = {
 				texture = "InvalidTexturePath",
 				setAllPoints = true
 			},
 			data = {
-				_sections = {}, -- References to each section in this grid.
-				_dirtySections = {}, -- Section garbage is stored per-grid.
-				_dirtyIcons = {}, -- Icon garbage is stored per-grid.
-
-				-- Helper functions.
-				CreateSection = self.GridFrame_CreateSection,
+				-- Inject helper functions.
+				RenderSections = self.GridFrame_RenderSections,
 			}
 		});
-	end
 
-	--[[
-		Resolution.GridFrame_CreateSection
-		Creates a new grid frame section.
+		scrollFrame:SetScrollChild(frame);
 
-			self - Reference to the grid frame region.
-	]]--
-	_R.GridFrame_CreateSection = function(self, name)
-		local section = nil;
-		if #self._dirtySections > 0 then
-			-- Grab an old section out of the garbage.
-			section = t_remove(self._dirtySections, 1);
-		else
-			-- Create a new shiny text object.
-			section = self:SpawnFrame({
-				size = 1,
-				texts = {
-					text = name,
-					injectSelf = "Text",
-					points = { point = "TOPLEFT" },
-					inherit = "Game11Font_o1"
+		-- Create a factory for generation sections.
+		frame.sectionFactory = _K.Factory({
+			size = 1,
+			parent = frame,
+			factoryName = "$parentSection",
+			texts = {
+				injectSelf = "Text",
+				points = { point = "TOPLEFT" },
+				inherit = "Game11Font_o1"
+			}
+		});
+
+		-- Create a factory for generating icons.
+		frame.iconFactory = _K.Factory({
+			size = GRID_ICON_SIZE,
+			parent = frame,
+			factoryName = "$parentIcon",
+			textures = {
+				{
+					-- Base shadow.
+					subLevel = 5,
+					setAllPoints = true,
+					injectSelf = "Shadow",
+					texture = _R.ARTWORK_PATH .. "UI-GridIcon",
+					texCoord = {0.71875, 1, 0, 0.5625},
 				},
-				data = {
-					_icons = {}, -- References to each icon in this section.
+				{
+					-- Texture
+					texture = "Interface\\ICONS\\inv_misc_questionmark",
+					subLevel = 6,
+					desaturate = true,
+					injectSelf = "Icon",
+					points = {
+						{ point = "TOPLEFT", x = 4, y = -4 },
+						{ point = "BOTTOMRIGHT", x = -4, y = 4 }
+					}
+				},
+				{
+					-- Overlay
+					texture = _R.ARTWORK_PATH .. "UI-GridIcon",
+					subLevel = 7,
+					setAllPoints = true,
+					injectSelf = "Overlay",
+					texCoord = {0, 0.28125, 0, 0.5625},
+					color = {1, 0, 0}
 				}
-			});
-		end
+			}
+		});
 
-		-- Anchoring
-		local previous = self._previousSection;
-		if previous then
-			-- Previous section exists, anchor to it.
-			section:SetPoint("LEFT", previous, "RIGHT");
-		else
-			-- This is the first section, default anchor.
-			section:SetPoint("TOPLEFT", self, "TOPLEFT");
-		end
-
-		self._previousSection = section; -- Set reference as previous entry.
-		t_insert(self._sections, section); -- Store reference in section table.
-
-		return section;
+		return frame;
 	end
 
 	--[[
-		Resolution.GridFrame_AddIcon
-		Adds an icon to the grid frame section.
+		Resolution.GridFrame_RenderSections
+		Render sections into a grid frame.
 
-			self - Reference to the section region.
+			self - Reference to the grid section region.
+			sections - Table containing section data.
 	]]--
-	_R.GridFrame_AddIcon = function(self, section)
-		local grid = section:GetParent();
-		local icon = nil;
+	_R.GridFrame_RenderSections = function(self, sections)
+		-- Calculate maximum amount of icons a section can contain
+		-- before it needs to be split into multiple rows.
+		local maxWidth = self:GetWidth() - GRID_SECTION_MARGIN_TOTAL;
+		local maxIcons = floor(maxWidth / GRID_ICON_SIZE);
 
-		if #grid._dirtyIcons > 0 then
-			-- Grab an old icon from the grid garbage.
-			icon = t_remove(grid._dirtyIcons, 1);
-		else
-			-- Create a new shiny icon.
-			icon = section:SpawnFrame(markup_gridIcon);
+		local rowFirstSection = nil;
+		local previousSection = nil;
+		local previousIsMulti = false;
+		local currentRowWidth = 0;
+
+		for sectionName, section in pairs(sections) do
+			local iconCount = #section;
+			local sectionWidth = GRID_SECTION_MARGIN_TOTAL + (iconCount * GRID_ICON_SIZE);
+
+			-- Generate the frame so we can calculate the string width.
+			local frame = self.sectionFactory:Generate();
+			frame.Text:SetText(sectionName);
+
+			-- If the header is longer than the icons, use that width instead.
+			sectionWidth = max(sectionWidth, frame.Text:GetStringWidth() + GRID_SECTION_MARGIN_TOTAL);
+
+			local isMulti = sectionWidth > maxWidth;
+			frame:SetSize(sectionWidth, GRID_ROW_HEIGHT + (ceil(iconCount / maxIcons) * GRID_ICON_SIZE));
+
+			-- Calculate frame position, and attach.
+			if previousSection then
+				-- This is not the first section, anchor to another.
+				if isMulti or previousIsMulti or currentRowWidth + sectionWidth > maxWidth then
+					-- Section requires its own row (isMulti) or clips over the max-width.
+					frame:SetPoint("TOPLEFT", rowFirstSection, "BOTTOMLEFT");
+					rowFirstSection = frame; -- Mark this as the first frame for this row.
+					currentRowWidth = 0; -- Reset the row width.
+				else
+					-- Section can fit on to the current row.
+					frame:SetPoint("LEFT", previousSection, "RIGHT");
+				end
+			else
+				-- This is the first section, default anchor.
+				frame:SetPoint("TOPLEFT", self, "TOPLEFT");
+				rowFirstSection = frame; -- Mark this as the first frame for this row.
+			end
+
+			-- Store these for next section calculations.
+			previousIsMulti = isMulti;
+			previousSection = frame;
+
+			-- Update current row width.
+			if not isMulti then
+				currentRowWidth = currentRowWidth + sectionWidth;
+			end
+
+			-- Render all of the icons for the section.
+			local previousIcon = nil;
+			local rowFirstIcon = nil;
+
+			for i = 1, iconCount do
+				local icon = self.iconFactory:Generate();
+
+				if previousIcon then
+					-- Not the first icon, attach to the correct icon.
+					if isMulti and mod(i, maxIcons) == 0 then
+						-- Cascade onto the next row.
+						icon:SetPoint("TOP", rowFirstIcon, "BOTTOM");
+						rowFirstIcon = icon; -- Mark as first icon in this row.
+					else
+						-- Continue the row from left to right.
+						icon:SetPoint("LEFT", previousIcon, "RIGHT");
+					end
+				else
+					-- This is the first icon, default anchoring.
+					icon:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, -GRID_SECTION_MARGIN);
+					rowFirstIcon = icon; -- Mark as first icon in this row.
+				end
+
+				previousIcon = icon;
+			end
 		end
-
-		-- Anchoring
-		local previous = section._previousIcon;
-		if previous then
-			-- Previous icon exists, anchor to it.
-			icon:SetPoint("LEFT", previous, "RIGHT");
-		else
-			-- No previous icon exists, anchor to section.
-			icon:SetPoint("TOPLEFT", section, "TOPLEFT", 5, -GRID_ICON_MARGIN);
-		end
-
-		section._previousIcon = icon; -- Set reference as previous entry.
-		t_insert(section._icons, icon); -- Store reference in icon table.
-
-		-- Recalculate frame sizing.
-		section:SetWidth((#section._icons * GRID_ICON_SIZE) + GRID_ICON_MARGIN);
-
-		return icon;
 	end
 end

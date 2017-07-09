@@ -20,13 +20,17 @@ do
 	-- [[ Pre-constructed Colour Objects ]] --
 	_R.Palette = {
 		Backdrop = CreateColor(0, 0, 0, 0.85),
+		EtchedBorder = CreateColor(1, 1, 1, 0.3),
 		Prefix = CreateColor(0.77, 0.12, 0.23, 1),
 		Normal = CreateColor(0.25, 0.78, 0.92, 1),
 		Highlight = CreateColor(0.67, 0.83, 0.45),
 		BarGeneric = CreateColor(0.25, 0.65, 0.95, 1),
 		BarBackdrop = CreateColor(1, 1, 1, 0.1),
 		White = CreateColor(1, 1, 1, 1),
+		Transparent = CreateColor(0, 0, 0, 0),
 	};
+
+	local WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";
 
 	-- [[ Pre-constructed Frame Backdrops ]] --
 	_R.DesignKits = {
@@ -34,14 +38,22 @@ do
 			tile = true,
 			edgeSize = 1,
 			tileSize = 32,
-			bgFile = "TILESET\\GENERIC\\Grey",
-			edgeFile = "TILESET\\GENERIC\\Grey",
+			bgFile = WHITE_TEXTURE,
+			edgeFile = WHITE_TEXTURE,
 			insets = { left = 2, right = 2, top = 2, bottom = 2 }
+		},
+		["ETCHED_FRAME_STYLE"] = {
+			tile = true,
+			edgeSize = 1,
+			tileSize = 32,
+			bgFile = WHITE_TEXTURE,
+			edgeFile = WHITE_TEXTURE,
+			insets = { left = 0, right = 0, top = 0, bottom = 0 }
 		},
 		["FLAT_FRAME_STYLE"] = {
 			tile = true,
 			tileSize = 32,
-			bgFile = "TILESET\\GENERIC\\Grey"
+			bgFile = WHITE_TEXTURE
 		}
 	};
 end

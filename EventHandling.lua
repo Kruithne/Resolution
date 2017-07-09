@@ -64,24 +64,32 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.OnLoadComplete = function(self)
-		--self:RenderTestGrid();
+		local background = self.frameMain:SpawnFrame({
+			type = "PlayerModel",
+			name = "Test",
+			strata = "HIGH",
+			points = {
+				{ point = "TOPLEFT" },
+				{ point = "BOTTOMRIGHT", x = -1 }
+			},
+			scripts = {
+				OnUpdate = function(self)
+					-- Model camera needs to be set after the first frame.
+					if not self.isCameraSet then
+						if not self.isNotFirstFrame then
+							self.isNotFirstFrame = true;
+							return;
+						end
 
-		local grid = self:CreateGridFrame();
+						self:SetCamera(0);
+						self.isCameraSet = true;
+					end
+				end
+			}
+		});
 
-		local sectionA = grid:CreateSection("TestA");
-		for i = 1, 3 do
-			self:GridFrame_AddIcon(sectionA);
-		end
-
-		local sectionB = grid:CreateSection("TestB");
-		for i = 1, 6 do
-			self:GridFrame_AddIcon(sectionB);
-		end
-		
-		local sectionC = grid:CreateSection("TestC");
-		for i = 1, 9 do
-			self:GridFrame_AddIcon(sectionC);
-		end
+		background:SetModel("Interface\\Glues\\Models\\UI_Human\\UI_Human.m2");
+		--background:SetCamera(0);
 	end
 
 	--[[
