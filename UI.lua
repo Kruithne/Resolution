@@ -148,9 +148,6 @@ do
 				}
 			});
 
-			-- Render class icons.
-			self:RenderClassIcons();
-
 			-- Set class icon for the current class.
 			local _, className = UnitClass(UNIT_PLAYER);
 			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
@@ -158,6 +155,9 @@ do
 			-- Set the player model to the actual player.
 			self.frameInterface.PlayerModel:SetUnit(UNIT_PLAYER);
 		end
+
+		-- Render/update class icons.
+		self:RenderClassIcons();
 
 		-- Background model needs to be reset every time.
 		local model = self.frameInterface.BackgroundModel;
