@@ -12,8 +12,6 @@ do
 	local _R = Resolution; -- Reference to addon container.
 	local _K = _R.refKrutilities; -- Reference to Krutilities instance.
 
-	local min = math.min;
-	local max = math.max;
 	local pairs = pairs;
 	local ceil = math.ceil;
 	local floor = math.floor;
@@ -391,8 +389,16 @@ do
 			value - Percentage value between 0-100.
 	]]--
 	_R.ProgressBar_SetBarProgress = function(self, value)
-		-- Ensure value is between 0-100, reversed, and scaled to 0-1.
-		value = (100 - max(0, min(100, value))) / 100;
+		-- Ensure value is between 0-100.
+		if value > 100 then
+			value = 100;
+		elseif value < 0 then
+			value = 0;
+		end
+
+		-- Reverse, and scale to 0-1.
+		value = (100 - value) / 100;
+
 		self.BarFill:SetPoint("RIGHT", (-398 * value) - 2, 0);
 	end
 
@@ -565,7 +571,10 @@ do
 			frame.Text:SetText(sectionName);
 
 			-- If the header is longer than the icons, use that width instead.
-			sectionWidth = max(sectionWidth, frame.Text:GetStringWidth() + GRID_SECTION_MARGIN_TOTAL);
+			local headerWidth = frame.Text:GetStringWidth() + GRID_SECTION_MARGIN_TOTAL;
+			if headerWidth > sectionWidth then
+				sectionWidth = headerWidth;
+			end
 
 			local isMulti = sectionWidth > maxWidth;
 			frame:SetSize(sectionWidth, GRID_ROW_HEIGHT + (ceil(iconCount / maxIcons) * GRID_ICON_SIZE));
