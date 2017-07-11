@@ -185,19 +185,31 @@ do
 	_R.RenderClassIcons = function(self)
 		-- Construct icons if needed.
 		if not self.classIcons then
-			local icons = {}; -- Storage for texture references.
 			local GetClassInfo = GetClassInfo; -- Local ref to func.
-			local texturePrefix = "Interface\\ICONS\\ClassIcon_";
+
+			-- String chunks.
+			local texturePath = _K.StringChunk("Interface\\ICONS\\ClassIcon_");
+			local injectName = _K.StringChunk("ClassIcon");
+
+			-- Construction tables.
+			local icons = {}; -- Storage for texture references.
 			local point = { point = "BOTTOMLEFT", x = 15, y = 15 };
+			local texture = {
+				size = 32,
+				points = point
+			};
 
 			for i = 1, GetNumClasses() do
 				local _, classTag, classID = GetClassInfo(i);
-				local icon = self.frameInterface:SpawnTexture({
-					texture = texturePrefix .. classTag,
-					injectSelf = "ClassIcon" .. classID,
-					size = 32,
-					points = point
-				});
+
+				-- Update creation strings.
+				texturePath:Set(2, classTag);
+				texture.texture = texturePath:Get();
+
+				injectName:Set(2, classID);
+				texture.injectSelf = injectName:Get();
+
+				local icon = self.frameInterface:SpawnTexture(texture);
 
 				-- Update point position for the next icon.
 				if i % 6 == 0 then
