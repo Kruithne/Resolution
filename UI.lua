@@ -14,6 +14,7 @@ do
 
 	local min = math.min;
 	local max = math.max;
+	local pairs = pairs;
 	local ceil = math.ceil;
 	local floor = math.floor;
 	local mod = math.fmod;
@@ -21,6 +22,7 @@ do
 	local t_insert = table.insert;
 
 	local UnitFactionGroup = UnitFactionGroup;
+	local GetMaxPlayerLevel = GetMaxPlayerLevel;
 
 	-- [[ Design Constants ]] --
 	local GRID_SECTION_MARGIN = 15; -- Distance between grid frame sections.
@@ -146,6 +148,9 @@ do
 				}
 			});
 
+			-- Render class icons.
+			self:RenderClassIcons();
+
 			-- Set class icon for the current class.
 			local _, className = UnitClass(UNIT_PLAYER);
 			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
@@ -173,6 +178,59 @@ do
 		-- Show that which needs showing.
 		self.frameInterface:Show();
 		self.frameMain.ButtonSettings:Show();
+	end
+
+	--[[
+		Resolution.CreateClassIcons
+		Render the class icons onto the main UI frame.
+
+			self - Reference to Resolution.
+
+	]]--
+	_R.RenderClassIcons = function(self)
+		-- Construct icons if needed.
+		if not self.classIcons then
+			local icons = {}; -- Storage for texture references.
+			local GetClassInfo = GetClassInfo; -- Local ref to func.
+			local texturePrefix = "Interface\\ICONS\\ClassIcon_";
+			local point = { point = "BOTTOMLEFT", x = 15, y = 15 };
+
+			for i = 1, GetNumClasses() do
+				local _, classTag, classID = GetClassInfo(i);
+				local icon = self.frameInterface:SpawnTexture({
+					texture = texturePrefix .. classTag,
+					injectSelf = "ClassIcon" .. classID,
+					size = 32,
+					points = point
+				});
+
+				-- Update point position for the next icon.
+				if i % 6 == 0 then
+					-- Shift up a row.
+					point.x = 15; -- Reset to spacing.
+					point.y = point.y + 37; -- 32 (icon width) + 5 (spacing).
+				else
+					-- Shift over a position.
+					point.x = point.x + 37; -- 32 (icon width) + 5 (spacing).
+				end
+
+				icons[classID] = icon; -- Store refrence to texture.
+			end
+
+			self.classIcons = icons;
+		end
+
+		-- Update icons.
+		local classData = ResolutionDataCharacters;
+		local maxLevel = GetMaxPlayerLevel();
+
+		for classID, classIcon in pairs(self.classIcons) do
+			local storedClass = classData[classID];
+			local activated = storedClass and storedClass.level >= maxLevel;
+
+			classIcon:SetAlpha(activated and 1 or 0.5);
+			classIcon:SetDesaturated(not activated);
+		end
 	end
 
 	--[[
