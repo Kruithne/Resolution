@@ -12,6 +12,11 @@ do
 	local _R = Resolution;
 	local CreateColor = CreateColor;
 
+	-- [[ Static Non-Localized Strings ]] --
+	_R.ADDON_NAME = "Resolution";
+	_R.ARTWORK_PATH = "Interface\\AddOns\\Resolution\\Artwork\\";
+	_R.CHAT_PREFIX = "{Normal}<{Prefix}%s{Normal}> %%s";
+
 	-- [[ Pattern Matching Expressions ]] --
 	_R.Patterns = {
 		Palette = "{(.-)}",
