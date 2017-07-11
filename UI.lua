@@ -15,8 +15,6 @@ do
 	local pairs = pairs;
 	local ceil = math.ceil;
 	local floor = math.floor;
-	local t_remove = table.remove;
-	local t_insert = table.insert;
 
 	local UnitFactionGroup = UnitFactionGroup;
 	local GetMaxPlayerLevel = GetMaxPlayerLevel;
