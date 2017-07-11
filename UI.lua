@@ -17,7 +17,6 @@ do
 	local pairs = pairs;
 	local ceil = math.ceil;
 	local floor = math.floor;
-	local mod = math.fmod;
 	local t_remove = table.remove;
 	local t_insert = table.insert;
 
@@ -607,7 +606,7 @@ do
 
 				if previousIcon then
 					-- Not the first icon, attach to the correct icon.
-					if isMulti and mod(i, maxIcons) == 0 then
+					if isMulti and i % maxIcons == 0 then
 						-- Cascade onto the next row.
 						icon:SetPoint("TOP", rowFirstIcon, "BOTTOM");
 						rowFirstIcon = icon; -- Mark as first icon in this row.
