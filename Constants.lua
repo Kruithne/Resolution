@@ -16,6 +16,7 @@ do
 	_R.ADDON_NAME = "Resolution";
 	_R.ARTWORK_PATH = "Interface\\AddOns\\Resolution\\Artwork\\";
 	_R.CHAT_PREFIX = "{Normal}<{Prefix}%s{Normal}> %%s";
+	_R.GUILD_TAG = "<%s>";
 
 	-- [[ Pattern Matching Expressions ]] --
 	_R.Patterns = {

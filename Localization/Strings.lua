@@ -23,5 +23,7 @@ do
 		["LOADING_TEXT_DATA"] = "Loading data...",
 		["LOADING_TEXT_CHAR"] = "Checking character details...",
 		["LOADING_TEXT_TOYS"] = "Checking toy collection...",
+
+		["PLAYER_NO_GUILD"] = "No Guild",
 	};
 end

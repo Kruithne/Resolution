@@ -100,6 +100,9 @@ do
 		if not self.frameInterface then
 			self:CreateCornerButton("Settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
+			local fontFile = STANDARD_TEXT_FONT;
+			local fontFlags = "OUTLINE";
+
 			self.frameInterface = self.frameMain:SpawnFrame({
 				setAllPoints = true,
 				injectSelf = "Container",
@@ -139,6 +142,24 @@ do
 						injectSelf = "ClassIcon",
 						size = 90,
 						points = { point = "TOPLEFT", x = 15, y = -15 }
+					}
+				},
+				texts = {
+					{
+						text = UnitPVPName(UNIT_PLAYER),
+						injectSelf = "PlayerTitle",
+						font = fontFile,
+						fontSize = 25,
+						fontFlags = fontFlags,
+						points = { point = "TOPLEFT", x = 115, y = -33 }
+					},
+					{
+						text = self.GUILD_TAG:format((GetGuildInfo(UNIT_PLAYER)) or self.PLAYER_NO_GUILD),
+						injectSelf = "PlayerGuild",
+						font = fontFile,
+						fontSize = 25,
+						fontFlags = fontFlags,
+						points = { point = "TOPLEFT", x = 115, y = -63 },
 					}
 				}
 			});
