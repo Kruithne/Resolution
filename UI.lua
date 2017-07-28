@@ -1,7 +1,7 @@
 --[[
 	Resolution (C) Kruithne <kruithne@gmail.com>
 	Licensed under GNU General Public Licence version 3.
-	
+
 	https://github.com/Kruithne/Resolution
 
 	UI.lua - Contains functions responsible for rendering the addon UI.
@@ -135,6 +135,28 @@ do
 						injectSelf = "PlayerModel",
 						size = 400,
 						points = { point = "CENTER", x = -17, y = -25 }
+					},
+					{
+						injectSelf = "Tooltip",
+						inherit = "TooltipBorderedFrameTemplate",
+						strata = "TOOLTIP",
+						topLevel = true,
+						clampedToScreen = true,
+						hidden = true,
+						texts = {
+							{
+								injectSelf = "Title",
+								inherit = "GameTooltipHeaderText",
+								justifyH = "LEFT",
+								points = { point = "TOPLEFT", x = 10, y = -11 }
+							},
+							{
+								injectSelf = "Info",
+								inherit = "GameFontNormal",
+								justifyH = "LEFT",
+								points = { point = "TOPLEFT", relativeKey = "Title", relativePoint = "BOTTOMLEFT", y = -2 }
+							}
+						}
 					}
 				},
 				textures = {
@@ -207,6 +229,7 @@ do
 		-- Construct icons if needed.
 		if not self.classIcons then
 			local GetClassInfo = GetClassInfo; -- Local ref to func.
+			local RAID_CLASS_COLORS = RAID_CLASS_COLORS;
 
 			-- String chunks.
 			local texturePath = _K.StringChunk("Interface\\ICONS\\ClassIcon_");
@@ -215,11 +238,24 @@ do
 			-- Construction tables.
 			local icons = {}; -- Storage for texture references.
 			local point = { point = "BOTTOMLEFT", x = 15, y = 15 };
-			local texture = {
+			local texture = { injectSelf = "Icon" };
+
+			local frameStructure = {
 				size = 32,
-				points = point
+				points = point, -- Added by reference for easy modification below!
+				textures = texture, -- Added by reference for easy modification below!
+				scripts = {
+					OnEnter = function(icon)
+						self:ShowTooltip(icon._tooltipHeaderString, icon._tooltipInfoString, icon, icon._tooltipHeaderColor);
+					end,
+
+					OnLeave = function()
+						self:HideTooltip();
+					end
+				}
 			};
 
+			-- Loop through all available classes.
 			for i = 1, GetNumClasses() do
 				local _, classTag, classID = GetClassInfo(i);
 
@@ -228,9 +264,9 @@ do
 				texture.texture = texturePath:Get();
 
 				injectName:Set(2, classID);
-				texture.injectSelf = injectName:Get();
+				frameStructure.injectSelf = injectName:Get();
 
-				local icon = self.frameInterface:SpawnTexture(texture);
+				local icon = self.frameInterface:SpawnFrame(frameStructure);
 
 				-- Update point position for the next icon.
 				if i % 6 == 0 then
@@ -251,14 +287,71 @@ do
 		-- Update icons.
 		local classData = ResolutionDataCharacters;
 		local maxLevel = GetMaxPlayerLevel();
+		local infoChunk = _K.StringChunk(LEVEL);
+		local noCharInfo = self.CLASS_NO_CHARACTER_INFO:format(maxLevel);
 
 		for classID, classIcon in pairs(self.classIcons) do
 			local storedClass = classData[classID];
 			local activated = storedClass and storedClass.level >= maxLevel;
 
-			classIcon:SetAlpha(activated and 1 or 0.5);
-			classIcon:SetDesaturated(not activated);
+			classIcon.Icon:SetAlpha(activated and 1 or 0.5);
+			classIcon.Icon:SetDesaturated(not activated);
+
+			-- Pre-compile tooltip info string.
+			local className, classTag = GetClassInfo(classID);
+			classIcon._tooltipHeaderString = storedClass and self.PLAYER_REALM_FORMAT:format(storedClass.name, storedClass.realm) or self.CLASS_NO_CHARACTER;
+			classIcon._tooltipHeaderColor = storedClass and RAID_CLASS_COLORS[classTag] or self.Palette.Disabled;
+			classIcon._tooltipInfoString = noCharInfo:format(className); -- Default, replaced in next scope.
+
+			if storedClass then
+				infoChunk:Set(2, storedClass.level);
+				infoChunk:Set(3, storedClass.race);
+				infoChunk:Set(4, className);
+
+				classIcon._tooltipInfoString = infoChunk:Get(" ");
+			end
 		end
+	end
+
+	--[[
+		Resolution.ShowTooltip
+		Activate the tooltip with the provided details.
+
+			self - Reference to Resolution.
+			titleText - Text to appear in the tooltip header.
+			infoText - Information text to fill the tooltip.
+			anchor - Region to anchor the tooltip to (visually).
+			color - Color for the title text. Defaults to white.
+	]]--
+	_R.ShowTooltip = function(self, titleText, infoText, anchor, color)
+		local tooltip = self.frameInterface.Tooltip;
+		local regionTitle, regionInfo = tooltip.Title, tooltip.Info;
+
+		-- Set the tooltip text.
+		regionTitle:SetText(titleText);
+		regionInfo:SetText(infoText);
+
+		-- Update the tooltip region dimensions.
+		tooltip:SetHeight(regionTitle:GetHeight() + regionInfo:GetHeight() + 24); -- 24 for padding
+		tooltip:SetWidth(regionInfo:GetWidth() + 24); -- We just assume the info is always longest.
+
+		-- Color the title text (default to white).
+		color = color or self.Palette.White;
+		regionTitle:SetTextColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1);
+
+		-- Position tooltip relative to the anchor region.
+		tooltip:SetPoint("BOTTOMLEFT", anchor, "CENTER", 5, 5);
+		tooltip:Show();
+	end
+
+	--[[
+		Resolution.HideTooltip
+		Hide the interface tooltip
+
+			self - Reference to Resolution.
+	]]--
+	_R.HideTooltip = function(self)
+		self.frameInterface.Tooltip:Hide();
 	end
 
 	--[[
@@ -350,17 +443,17 @@ do
 	_R.LoadFrame_OnUpdate = function(self, elapsed)
 		local changeBack = 0.8 * elapsed;
 		local backL, _, _, _, backR = self.backdrop:GetTexCoord();
-		
+
 		backL = backL - changeBack;
 		backR = backR - changeBack;
-		
+
 		-- Prevent overflowing texture bounds.
 		if backL <= -1 then
 			local excess = ceil(backL);
 			backL = backL - excess;
 			backR = backR - excess;
 		end
-		
+
 		self.backdrop:SetTexCoord(backL, backR, 0, 1);
 	end
 

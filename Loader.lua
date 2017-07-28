@@ -1,7 +1,7 @@
 --[[
 	Resolution (C) Kruithne <kruithne@gmail.com>
 	Licensed under GNU General Public Licence version 3.
-	
+
 	https://github.com/Kruithne/Resolution
 
 	Loader.lua - Responsible for loading character data.
@@ -40,11 +40,12 @@ do
 				local classIndex = select(3, UnitClass(strPlayer));
 				local existingChar = charStore[classIndex];
 
-				if not existingChar or existingChar.level < playerLevel then
+				if not existingChar or existingChar.level <= playerLevel then
 					charStore[classIndex] = {
 						name = UnitName(strPlayer),
 						level = playerLevel,
-						race = select(2, UnitRace(strPlayer))
+						race = select(2, UnitRace(strPlayer)),
+						realm = GetRealmName()
 					};
 				end
 			end,

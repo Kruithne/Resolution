@@ -1,7 +1,7 @@
 --[[
 	Resolution (C) Kruithne <kruithne@gmail.com>
 	Licensed under GNU General Public Licence version 3.
-	
+
 	https://github.com/Kruithne/Resolution
 
 	Constants.lua - Constant/pre-compiled values for the add-on.
@@ -17,6 +17,7 @@ do
 	_R.ARTWORK_PATH = "Interface\\AddOns\\Resolution\\Artwork\\";
 	_R.CHAT_PREFIX = "{Normal}<{Prefix}%s{Normal}> %%s";
 	_R.GUILD_TAG = "<%s>";
+	_R.PLAYER_REALM_FORMAT = "%s - %s";
 
 	-- [[ Pattern Matching Expressions ]] --
 	_R.Patterns = {
@@ -34,6 +35,7 @@ do
 		BarBackdrop = CreateColor(1, 1, 1, 0.1),
 		White = CreateColor(1, 1, 1, 1),
 		Transparent = CreateColor(0, 0, 0, 0),
+		Disabled = CreateColor(0.63, 0.63, 0.63);
 	};
 
 	local WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";

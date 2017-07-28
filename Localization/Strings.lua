@@ -1,7 +1,7 @@
 --[[
 	Resolution (C) Kruithne <kruithne@gmail.com>
 	Licensed under GNU General Public Licence version 3.
-	
+
 	https://github.com/Kruithne/Resolution
 
 	Strings.lua - Default (English) localization strings.
@@ -25,5 +25,7 @@ do
 		["LOADING_TEXT_TOYS"] = "Checking toy collection...",
 
 		["PLAYER_NO_GUILD"] = "No Guild",
+		["CLASS_NO_CHARACTER"] = "No Character",
+		["CLASS_NO_CHARACTER_INFO"] = "You do not have a level %s %%s.",
 	};
 end
