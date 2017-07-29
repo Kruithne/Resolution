@@ -16,6 +16,7 @@ do
 	local ceil = math.ceil;
 	local floor = math.floor;
 
+	local GetBindingFromClick = GetBindingFromClick;
 	local UnitFactionGroup = UnitFactionGroup;
 	local GetMaxPlayerLevel = GetMaxPlayerLevel;
 
@@ -48,6 +49,15 @@ do
 				strata = "DIALOG",
 				points = {point = "CENTER"},
 				name = "ResolutionFrame",
+				enableKeyboard = true,
+				scripts = {
+					OnKeyDown = function(frame, key)
+						local binding = GetBindingFromClick(key);
+						if binding == "TOGGLEGAMEMENU" then
+							self:HideMainFrame();
+						end
+					end
+				}
 			});
 
 			-- Apply border overlay.
