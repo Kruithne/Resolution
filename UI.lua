@@ -47,7 +47,7 @@ do
 			self.frameMain = _K:Frame({
 				width = 900, height = 500,
 				strata = "DIALOG",
-				points = {point = "CENTER"},
+				points = "CENTER",
 				name = "ResolutionFrame",
 				enableKeyboard = true,
 				scripts = {
@@ -144,7 +144,7 @@ do
 						injectSelf = "BackgroundModel",
 						strata = "HIGH",
 						points = {
-							{ point = "TOPLEFT" },
+							"TOPLEFT",
 							{ point = "BOTTOMRIGHT", x = -1 } -- Model over-clips by 1 pixel, for some reason.
 						},
 						scripts = {
@@ -663,7 +663,7 @@ do
 			factoryName = "$parentSection",
 			texts = {
 				injectSelf = "Text",
-				points = { point = "TOPLEFT" },
+				points = "TOPLEFT" ,
 				inherit = "Game11Font_o1"
 			}
 		});
