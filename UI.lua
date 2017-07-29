@@ -210,6 +210,30 @@ do
 						points = { point = "TOPLEFT", x = 115, y = -63 },
 					},
 					{
+						text = "79.5%",
+						injectSelf = "OverviewValue",
+						font = fontFile,
+						fontSize = 34,
+						fontFlags = fontFlags,
+						points = { point = "LEFT", x = 140 }
+					},
+					{
+						text = "Overall Progress",
+						injectSelf = "OverviewHeader",
+						font = fontFile,
+						fontSize = 24,
+						fontFlags = fontFlags,
+						points = { point = "BOTTOM", relativePoint = "TOP", relativeKey = "OverviewValue", y = 10 }
+					},
+					{
+						text = "1025 Days Played",
+						injectSelf = "OverviewPlayed",
+						font = fontFile,
+						fontSize = 24,
+						fontFlags = fontFlags,
+						points = { point = "TOP", relativePoint = "BOTTOM", relativeKey = "OverviewValue", y = -10 }
+					},
+					{
 						text = "Tip: This here is a test, some kind of tip!",
 						injectSelf = "TipText",
 						font = fontFile,
