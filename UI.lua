@@ -104,8 +104,10 @@ do
 		if not self.frameInterface then
 			self:CreateCornerButton("Settings", "UI-SettingsButton", self.OnSettingsButtonClicked);
 
-			local fontFile = STANDARD_TEXT_FONT;
-			local fontFlags = "OUTLINE";
+			local fontMixin = {
+				fontFile = STANDARD_TEXT_FONT,
+				fontFlags = "OUTLINE"
+			};
 
 			self.frameInterface = self.frameMain:SpawnFrame({
 				setAllPoints = true,
@@ -196,49 +198,43 @@ do
 					{
 						text = UnitPVPName(UNIT_PLAYER),
 						injectSelf = "PlayerTitle",
-						font = fontFile,
 						fontSize = 25,
-						fontFlags = fontFlags,
+						mixin = fontMixin,
 						points = { point = "TOPLEFT", x = 115, y = -33 }
 					},
 					{
 						text = self.GUILD_TAG:format((GetGuildInfo(UNIT_PLAYER)) or self.PLAYER_NO_GUILD),
 						injectSelf = "PlayerGuild",
-						font = fontFile,
 						fontSize = 25,
-						fontFlags = fontFlags,
+						mixin = fontMixin,
 						points = { point = "TOPLEFT", x = 115, y = -63 },
 					},
 					{
 						text = "79.5%",
 						injectSelf = "OverviewValue",
-						font = fontFile,
 						fontSize = 34,
-						fontFlags = fontFlags,
+						mixin = fontMixin,
 						points = { point = "LEFT", x = 140 }
 					},
 					{
 						text = "Overall Progress",
 						injectSelf = "OverviewHeader",
-						font = fontFile,
 						fontSize = 24,
-						fontFlags = fontFlags,
+						mixin = fontMixin,
 						points = { point = "BOTTOM", relativePoint = "TOP", relativeKey = "OverviewValue", y = 10 }
 					},
 					{
 						text = "1025 Days Played",
 						injectSelf = "OverviewPlayed",
-						font = fontFile,
 						fontSize = 24,
-						fontFlags = fontFlags,
+						mixin = fontMixin,
 						points = { point = "TOP", relativePoint = "BOTTOM", relativeKey = "OverviewValue", y = -10 }
 					},
 					{
 						text = "Tip: This here is a test, some kind of tip!",
 						injectSelf = "TipText",
-						font = fontFile,
 						fontSize = 14,
-						fontFlags = fontFlags,
+						mixin = fontMixin,
 						points = { point = "BOTTOMRIGHT", x = -10, y = 10 },
 					}
 				}
