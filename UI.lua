@@ -54,7 +54,7 @@ do
 					OnKeyDown = function(frame, key)
 						local binding = GetBindingFromClick(key);
 						if binding == "TOGGLEGAMEMENU" then
-							self:HideMainFrame();
+							self:Close();
 						end
 					end
 				}
