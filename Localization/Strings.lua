@@ -27,5 +27,10 @@ do
 		["PLAYER_NO_GUILD"] = "No Guild",
 		["CLASS_NO_CHARACTER"] = "No Character",
 		["CLASS_NO_CHARACTER_INFO"] = "You do not have a level %s %%s.",
+
+		["TIP_TEXTS"] = {
+			"Tip: Resolution must be opened on a character for its progress to count.",
+			"Tip: Clicking on the bars above open an in-depth display of the collection."
+		}
 	};
 end

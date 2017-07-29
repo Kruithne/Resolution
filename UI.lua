@@ -106,6 +106,28 @@ do
 			self.frameInterface = self.frameMain:SpawnFrame({
 				setAllPoints = true,
 				injectSelf = "Container",
+				data = { totalElapsed = 0, currentTipIndex = 0, tips = self.TIP_TEXTS },
+				scripts = {
+					OnUpdate = function(self, elapsed)
+						self.totalElapsed = self.totalElapsed + elapsed;
+						if not self.hasUpdated or self.totalElapsed >= 5 then
+							-- Move to the next tip, reset if needed.
+							self.currentTipIndex = self.currentTipIndex + 1;
+							if self.currentTipIndex > #self.tips then
+								self.currentTipIndex = 1;
+							end
+
+							 -- Update tip text.
+							self.TipText:SetText(self.tips[self.currentTipIndex]);
+
+							self.totalElapsed = 0; -- Reset timer.
+							if not self.hasUpdated then
+								-- This is used to force the first tip update without waiting.
+								self.hasUpdated = true;
+							end
+						end
+					end
+				},
 				frames = {
 					{
 						type = "PlayerModel",
@@ -182,6 +204,14 @@ do
 						fontSize = 25,
 						fontFlags = fontFlags,
 						points = { point = "TOPLEFT", x = 115, y = -63 },
+					},
+					{
+						text = "Tip: This here is a test, some kind of tip!",
+						injectSelf = "TipText",
+						font = fontFile,
+						fontSize = 14,
+						fontFlags = fontFlags,
+						points = { point = "BOTTOMRIGHT", x = -10, y = 10 },
 					}
 				}
 			});
