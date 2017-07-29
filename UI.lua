@@ -27,12 +27,6 @@ do
 	local GRID_ROW_HEIGHT = 20; -- Height of a grid row, not including icon heights.
 
 	-- [[ Local Strings ]] --
-	local BACK_MODEL_PREFIX = "Interface\\Glues\\Models\\";
-	local BACK_MODEL_ALLIANCE = "UI_Human\\UI_Human.m2";
-	local BACK_MODEL_HORDE = "UI_Horde\\UI_Horde.m2";
-	local BACK_MODEL_NEUTRAL = "UI_Pandaren\\UI_Pandaren.m2";
-	local UNIT_FACTION_ALLIANCE = "Alliance";
-	local UNIT_FACTION_HORDE = "Horde";
 	local UNIT_PLAYER = "player";
 
 	--[[
@@ -242,16 +236,16 @@ do
 		model.isCameraSet = false;
 		model.isNotFirstFrame = false;
 
-		local modelPath = BACK_MODEL_NEUTRAL;
+		local modelPath = "UI_Pandaren\\UI_Pandaren.m2";
 		local playerFaction = UnitFactionGroup(UNIT_PLAYER);
 
-		if playerFaction == UNIT_FACTION_ALLIANCE then
-			modelPath = BACK_MODEL_ALLIANCE;
-		elseif playerFaction == UNIT_FACTION_HORDE then
-			modelPath = BACK_MODEL_HORDE;
+		if playerFaction == "Alliance" then
+			modelPath = "UI_Human\\UI_Human.m2";
+		elseif playerFaction == "Horde" then
+			modelPath = "UI_Horde\\UI_Horde.m2";
 		end
 
-		model:SetModel(BACK_MODEL_PREFIX .. modelPath);
+		model:SetModel("Interface\\Glues\\Models\\" .. modelPath);
 
 		-- Show that which needs showing.
 		self.frameInterface:Show();
