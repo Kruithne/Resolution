@@ -19,6 +19,7 @@ do
 	local GetBindingFromClick = GetBindingFromClick;
 	local UnitFactionGroup = UnitFactionGroup;
 	local GetMaxPlayerLevel = GetMaxPlayerLevel;
+	local ChatFrame_OpenChat = ChatFrame_OpenChat;
 
 	-- [[ Design Constants ]] --
 	local GRID_SECTION_MARGIN = 15; -- Distance between grid frame sections.
@@ -49,6 +50,8 @@ do
 						local binding = GetBindingFromClick(key);
 						if binding == "TOGGLEGAMEMENU" then
 							self:Close();
+						elseif binding == "OPENCHAT" then
+							ChatFrame_OpenChat("");
 						end
 					end
 				}
