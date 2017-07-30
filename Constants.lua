@@ -57,6 +57,7 @@ do
 		Highlight = CreateColor(0.67, 0.83, 0.45),
 		BarGeneric = CreateColor(0.12, 0.32, 0.47, 1),
 		BarBackdrop = CreateColor(1, 1, 1, 0.1),
+		BarBackdropDark = CreateColor(1, 1, 1, 0.2),
 		White = CreateColor(1, 1, 1, 1),
 		Transparent = CreateColor(0, 0, 0, 0),
 		Disabled = CreateColor(0.63, 0.63, 0.63),
@@ -64,14 +65,23 @@ do
 	};
 
 	_R.WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";
+	_R.BLACK_TEXTURE = _R.ARTWORK_PATH .. "UI-Black";
 
 	-- [[ Pre-constructed Frame Backdrops ]] --
 	_R.DesignKits = {
-		["GENERIC_FRAME_STYLE"] = {
+		["GAPPED_BORDER_GENERIC"] = {
 			tile = true,
 			edgeSize = 1,
 			tileSize = 32,
 			bgFile = _R.WHITE_TEXTURE,
+			edgeFile = _R.WHITE_TEXTURE,
+			insets = { left = 2, right = 2, top = 2, bottom = 2 }
+		},
+		["GAPPED_BORDER_DARK"] = {
+			tile = true,
+			edgeSize = 1,
+			tileSize = 32,
+			bgFile = _R.BLACK_TEXTURE,
 			edgeFile = _R.WHITE_TEXTURE,
 			insets = { left = 2, right = 2, top = 2, bottom = 2 }
 		},

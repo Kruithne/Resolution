@@ -319,6 +319,8 @@ do
 				height = 20, width = 250,
 				color = self.Palette.OverviewOrange,
 				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT, x = -11 },
+				backdrop = self.DesignKits.GAPPED_BORDER_DARK,
+				backdropColor = self.Palette.BarBackdropDark,
 			};
 
 			local isFirstBar = true;
@@ -621,8 +623,8 @@ do
 			width = width, height = data.height or 30,
 			points = data.points,
 			name = name,
-			backdrop = self.DesignKits.GENERIC_FRAME_STYLE,
-			backdropColor = self.Palette.BarBackdrop,
+			backdrop = data.backdrop or self.DesignKits.GAPPED_BORDER_GENERIC,
+			backdropColor = data.backdropColor or self.Palette.BarBackdrop,
 			backdropBorderColor = self.Palette.BarGeneric,
 			texts = {
 				points = { point = self.ANCHOR_CENTER },
