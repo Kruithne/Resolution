@@ -684,8 +684,8 @@ do
 			color - Reference to a color object.
 	]]--
 	_R.ProgressBar_SetBarColor = function(self, color)
-		self.BarFill:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1);
-		self:SetBackdropBorderColor(color);
+		self.BarFill:SetVertexColor(color:GetRGBA());
+		self:SetBackdropBorderColor(color:GetRGBA());
 	end
 
 	--[[
