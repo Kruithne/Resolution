@@ -245,6 +245,12 @@ do
 				}
 			});
 
+			-- Render overview progress bars.
+			local previousBar;
+			for typeKey, typeData in pairs(self.COLLECTION_TYPES) do
+
+			end
+
 			-- Set class icon for the current class.
 			local _, className = UnitClass(self.UNIT_PLAYER);
 			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
@@ -255,8 +261,8 @@ do
 			self:UpdateTimePlayed(); -- Update played time.
 		end
 
-		-- Render/update class icons.
-		self:RenderClassIcons();
+		self:RenderClassIcons(); -- Render/update class icons.
+		self:RenderOverviewBars(); -- Render collection bars.
 
 		-- Background model needs to be reset every time.
 		local model = self.frameInterface.BackgroundModel;
@@ -277,6 +283,66 @@ do
 		-- Show that which needs showing.
 		self.frameInterface:Show();
 		self.frameMain.ButtonSettings:Show();
+	end
+
+	--[[
+		Resolution.RenderOverviewBars
+		Render the collection progression bars on the main UI frame.
+
+			self - Reference to Resolution.
+	]]--
+	_R.RenderOverviewBars = function(self)
+		if not self.overviewBars then
+			local bars = {}; -- Container for the bar regions.
+			local injectName = _K.StringChunk("OverviewBar");
+			local barName = _K.StringChunk("ResolutionOverviewBar")
+			local barStructure, progressStructure = {
+				size = 42,
+				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_CENTER, x = 100, y = 100 },
+				textures = {
+					{
+						injectSelf = "Icon",
+						size = 25,
+						subLevel = 4,
+						points = self.ANCHOR_CENTER,
+						mask = "Interface\\QUESTFRAME\\UI-QuestLog-BookIcon",
+					},
+					{
+						injectSelf = "IconBorder",
+						texture = self.ARTWORK_PATH .. "UI-BarIcon",
+						texCoord = { 0, 0.65625, 0, 0.65625 },
+						subLevel = 5,
+					}
+				}
+			},
+			{
+				height = 15, width = 100,
+				color = self.OverviewOrange,
+				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT },
+			};
+
+			local isFirstBar = true;
+			for typeKey, typeData in pairs(self.COLLECTION_TYPES) do
+				barStructure.injectSelf = injectName:SetAndGet(2, typeKey);
+				local bar = self.frameInterface:SpawnFrame(barStructure);
+
+				-- Update the anchoring for the next bar.
+				if isFirstBar then
+					isFirstBar = false;
+					barStructure.points = { point = self.ANCHOR_TOP, relativePoint = self.ANCHOR_BOTTOM, relativeTo = bar, y = 5 };
+				else
+					barStructure.points.relativeTo = bar;
+				end
+
+				bar.Icon:SetTexture("Interface\\ICONS\\" .. typeData.icon);
+				bar.progressBar = self:CreateProgressBar(bar, barName:SetAndGet(typeKey), progressStructure);
+
+				bars[typeKey] = bar; -- Store this region for later usage.
+				previousBar = bar;
+			end
+
+			self.overviewBars = bars; -- Store bar table for.
+		end
 	end
 
 	--[[
@@ -499,7 +565,7 @@ do
 				}
 			});
 
-			self.loadBar = self:CreateProgressBar(self.loadFrame, "TestProgressBar", {
+			self.loadBar = self:CreateProgressBar(self.loadFrame, "ResolutionMainLoadBar", {
 				points = { point = self.ANCHOR_TOP, y = -135 }
 			});
 		end
@@ -548,12 +614,10 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.CreateProgressBar = function(self, parent, name, data)
-		-- ToDo: SetBarColor
-
 		local bar = parent:SpawnFrame({
-			width = 400, height = 30,
-			name = name,
+			width = data.width or 400, height = data.height or 30,
 			points = data.points,
+			name = name,
 			backdrop = self.DesignKits.GENERIC_FRAME_STYLE,
 			backdropColor = self.Palette.BarBackdrop,
 			backdropBorderColor = self.Palette.BarGeneric,

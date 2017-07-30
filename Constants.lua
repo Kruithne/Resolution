@@ -37,6 +37,17 @@ do
 		Palette = "{(.-)}",
 	};
 
+	-- [[ Collection Types ]] --
+	_R.COLLECTION_TYPES = {
+		["Toys"] = { header = _R.COLLECTION_TOYS, icon = "INV_Misc_Toy_10" },
+		["Mounts"] = { header = _R.COLLECTION_MOUNTS, icon = "Ability_Mount_SpectralGryphon" },
+		["Heirlooms"] = { header = _R.COLLECTION_HEIRLOOMS, icon = "INV_Icon_HeirloomToken_Armor01" },
+		["Appearances"] = { header = _R.COLLECTION_APPEARANCES, icon = "Trade_Archaeology_QueenAzshara DressingGown" },
+		["Pets"] = { header = _R.COLLECTION_PETS, icon = "INV_StBernardDogPet" },
+		["Titles"] = { header = _R.COLLECTION_TITLES, icon = "ACHIEVEMENT_GUILDPERK_HONORABLEMENTION_RANK2" },
+		["Achievements"] = { header = _R.COLLECTION_ACHIEVEMENTS, icon = "Achievement_Quests_Completed_08" },
+	};
+
 	-- [[ Pre-constructed Colour Objects ]] --
 	_R.Palette = {
 		Backdrop = CreateColor(0, 0, 0, 0.85),
@@ -48,7 +59,8 @@ do
 		BarBackdrop = CreateColor(1, 1, 1, 0.1),
 		White = CreateColor(1, 1, 1, 1),
 		Transparent = CreateColor(0, 0, 0, 0),
-		Disabled = CreateColor(0.63, 0.63, 0.63);
+		Disabled = CreateColor(0.63, 0.63, 0.63),
+		OverviewOrange = CreateColor(0.97, 0.55, 0.16, 1);
 	};
 
 	local WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";

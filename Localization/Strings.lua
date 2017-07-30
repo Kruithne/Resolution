@@ -30,6 +30,14 @@ do
 
 		["OVERVIEW_DAYS_PLAYED"] = "%s Days Played",
 
+		["COLLECTION_TOYS"] = "Toys",
+		["COLLECTION_PETS"] = "Companion Pets",
+		["COLLECTION_MOUNTS"] = "Mounts",
+		["COLLECTION_TITLES"] = "Titles",
+		["COLLECTION_APPEARANCES"] = "Appearances",
+		["COLLECTION_HEIRLOOMS"] = "Heirlooms",
+		["COLLECTION_ACHIEVEMENTS"] = "Achievements",
+
 		["TIP_TEXTS"] = {
 			"Tip: Resolution must be opened on a character for its progress to count.",
 			"Tip: Click on the bars above to open an in-depth display of the collection."
