@@ -295,7 +295,6 @@ do
 		if not self.overviewBars then
 			local bars = {}; -- Container for the bar regions.
 			local injectName = _K.StringChunk("OverviewBar");
-			local barName = _K.StringChunk("ResolutionOverviewBar")
 			local barStructure, progressStructure = {
 				size = 42,
 				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_CENTER, x = 100, y = 100 },
@@ -339,7 +338,7 @@ do
 
 				progressStructure.points.relativeTo = bar;
 				bar.Icon:SetTexture("Interface\\ICONS\\" .. typeData.icon);
-				bar.progressBar = self:CreateProgressBar(self.frameInterface, barName:SetAndGet(2, typeKey), progressStructure);
+				bar.progressBar = self:CreateProgressBar(self.frameInterface, injectName:SetAndGet(2, typeKey), progressStructure);
 
 				bars[typeKey] = bar; -- Store this region for later usage.
 				previousBar = bar;
@@ -569,7 +568,7 @@ do
 				}
 			});
 
-			self.loadBar = self:CreateProgressBar(self.loadFrame, "ResolutionMainLoadBar", {
+			self.loadBar = self:CreateProgressBar(self.loadFrame, "LoadBar", {
 				points = { point = self.ANCHOR_TOP, y = -135 }
 			});
 		end
@@ -622,7 +621,7 @@ do
 		local bar = parent:SpawnFrame({
 			width = width, height = data.height or 30,
 			points = data.points,
-			name = name,
+			injectSelf = name,
 			backdrop = data.backdrop or self.DesignKits.GAPPED_BORDER_GENERIC,
 			backdropColor = data.backdropColor or self.Palette.BarBackdrop,
 			backdropBorderColor = self.Palette.BarGeneric,
