@@ -349,7 +349,7 @@ do
 	end
 
 	--[[
-		Resolution.CreateClassIcons
+		Resolution.RenderClassIcons
 		Render the class icons onto the main UI frame.
 
 			self - Reference to Resolution.
