@@ -19,6 +19,19 @@ do
 	_R.GUILD_TAG = "<%s>";
 	_R.PLAYER_REALM_FORMAT = "%s - %s";
 
+	-- [[ Common Strings ]] --
+	_R.ANCHOR_TOP = "TOP";
+	_R.ANCHOR_TOPLEFT = "TOPLEFT";
+	_R.ANCHOR_TOPRIGHT = "TOPRIGHT";
+	_R.ANCHOR_BOTTOM = "BOTTOM";
+	_R.ANCHOR_BOTTOMRIGHT = "BOTTOMRIGHT";
+	_R.ANCHOR_BOTTOMLEFT = "BOTTOMLEFT";
+	_R.ANCHOR_LEFT = "LEFT";
+	_R.ANCHOR_RIGHT = "RIGHT";
+	_R.ANCHOR_CENTER = "CENTER";
+
+	_R.UNIT_PLAYER = "player";
+
 	-- [[ Pattern Matching Expressions ]] --
 	_R.Patterns = {
 		Palette = "{(.-)}",

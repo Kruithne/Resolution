@@ -16,19 +16,14 @@ do
 	local ceil = math.ceil;
 	local floor = math.floor;
 
-	local GetBindingFromClick = GetBindingFromClick;
 	local UnitFactionGroup = UnitFactionGroup;
 	local GetMaxPlayerLevel = GetMaxPlayerLevel;
-	local ChatFrame_OpenChat = ChatFrame_OpenChat;
 
 	-- [[ Design Constants ]] --
 	local GRID_SECTION_MARGIN = 15; -- Distance between grid frame sections.
 	local GRID_SECTION_MARGIN_TOTAL = GRID_SECTION_MARGIN * 2; -- Total margin size for sections.
 	local GRID_ICON_SIZE = 36; -- Width/height of the grid frame icon regions.
 	local GRID_ROW_HEIGHT = 20; -- Height of a grid row, not including icon heights.
-
-	-- [[ Local Strings ]] --
-	local UNIT_PLAYER = "player";
 
 	--[[
 		Resolution.ShowMainFrame
@@ -38,11 +33,15 @@ do
 	]]--
 	_R.ShowMainFrame = function(self)
 		if not self.frameMain then
+			-- Store function references for upvalues in OnKeyDown.
+			local GetBindingFromClick = GetBindingFromClick;
+			local ChatFrame_OpenChat = ChatFrame_OpenChat;
+
 			-- Generate the main UI frame.
 			self.frameMain = _K:Frame({
 				width = 900, height = 500,
 				strata = "DIALOG",
-				points = "CENTER",
+				points = self.ANCHOR_CENTER,
 				name = "ResolutionFrame",
 				enableKeyboard = true,
 				scripts = {
@@ -143,8 +142,8 @@ do
 						injectSelf = "BackgroundModel",
 						strata = "HIGH",
 						points = {
-							"TOPLEFT",
-							{ point = "BOTTOMRIGHT", x = -1 } -- Model over-clips by 1 pixel, for some reason.
+							self.ANCHOR_TOPLEFT,
+							{ point = self.ANCHOR_BOTTOMRIGHT, x = -1 } -- Model over-clips by 1 pixel, for some reason.
 						},
 						scripts = {
 							OnUpdate = function(self)
@@ -165,7 +164,7 @@ do
 						type = "PlayerModel",
 						injectSelf = "PlayerModel",
 						size = 400,
-						points = { point = "CENTER", x = -17, y = -25 }
+						points = { point = self.ANCHOR_CENTER, x = -17, y = -25 }
 					},
 					{
 						injectSelf = "Tooltip",
@@ -178,14 +177,14 @@ do
 							{
 								injectSelf = "Title",
 								inherit = "GameTooltipHeaderText",
-								justifyH = "LEFT",
-								points = { point = "TOPLEFT", x = 10, y = -11 }
+								justifyH = self.ANCHOR_LEFT,
+								points = { point = self.ANCHOR_TOPLEFT, x = 10, y = -11 }
 							},
 							{
 								injectSelf = "Info",
 								inherit = "GameFontNormal",
-								justifyH = "LEFT",
-								points = { point = "TOPLEFT", relativeKey = "Title", relativePoint = "BOTTOMLEFT", y = -2 }
+								justifyH = self.ANCHOR_LEFT,
+								points = { point = self.ANCHOR_TOPLEFT, relativeKey = "Title", relativePoint = self.ANCHOR_BOTTOMLEFT, y = -2 }
 							}
 						}
 					}
@@ -194,60 +193,60 @@ do
 					{
 						injectSelf = "ClassIcon",
 						size = 90,
-						points = { point = "TOPLEFT", x = 15, y = -15 }
+						points = { point = self.ANCHOR_TOPLEFT, x = 15, y = -15 }
 					}
 				},
 				texts = {
 					{
-						text = UnitPVPName(UNIT_PLAYER),
+						text = UnitPVPName(self.UNIT_PLAYER),
 						injectSelf = "PlayerTitle",
 						fontSize = 25,
 						mixin = fontMixin,
-						points = { point = "TOPLEFT", x = 115, y = -33 }
+						points = { point = self.ANCHOR_TOPLEFT, x = 115, y = -33 }
 					},
 					{
-						text = self.GUILD_TAG:format((GetGuildInfo(UNIT_PLAYER)) or self.PLAYER_NO_GUILD),
+						text = self.GUILD_TAG:format((GetGuildInfo(self.UNIT_PLAYER)) or self.PLAYER_NO_GUILD),
 						injectSelf = "PlayerGuild",
 						fontSize = 25,
 						mixin = fontMixin,
-						points = { point = "TOPLEFT", x = 115, y = -63 },
+						points = { point = self.ANCHOR_TOPLEFT, x = 115, y = -63 },
 					},
 					{
 						text = "79.5%",
 						injectSelf = "OverviewValue",
 						fontSize = 34,
 						mixin = fontMixin,
-						points = { point = "LEFT", x = 140 }
+						points = { point = self.ANCHOR_LEFT, x = 140 }
 					},
 					{
 						text = "Overall Progress",
 						injectSelf = "OverviewHeader",
 						fontSize = 24,
 						mixin = fontMixin,
-						points = { point = "BOTTOM", relativePoint = "TOP", relativeKey = "OverviewValue", y = 10 }
+						points = { point = self.ANCHOR_BOTTOM, relativePoint = self.ANCHOR_TOP, relativeKey = "OverviewValue", y = 10 }
 					},
 					{
 						injectSelf = "OverviewPlayed",
 						fontSize = 24,
 						mixin = fontMixin,
-						points = { point = "TOP", relativePoint = "BOTTOM", relativeKey = "OverviewValue", y = -10 }
+						points = { point = self.ANCHOR_TOP, relativePoint = self.ANCHOR_BOTTOM, relativeKey = "OverviewValue", y = -10 }
 					},
 					{
 						text = "Tip: This here is a test, some kind of tip!",
 						injectSelf = "TipText",
 						fontSize = 14,
 						mixin = fontMixin,
-						points = { point = "BOTTOMRIGHT", x = -10, y = 10 },
+						points = { point = self.ANCHOR_BOTTOMRIGHT, x = -10, y = 10 },
 					}
 				}
 			});
 
 			-- Set class icon for the current class.
-			local _, className = UnitClass(UNIT_PLAYER);
+			local _, className = UnitClass(self.UNIT_PLAYER);
 			self.frameInterface.ClassIcon:SetAtlas("classhall-circle-" .. className);
 
 			-- Set the player model to the actual player.
-			self.frameInterface.PlayerModel:SetUnit(UNIT_PLAYER);
+			self.frameInterface.PlayerModel:SetUnit(self.UNIT_PLAYER);
 
 			self:UpdateTimePlayed(); -- Update played time.
 		end
@@ -261,7 +260,7 @@ do
 		model.isNotFirstFrame = false;
 
 		local modelPath = "UI_Pandaren\\UI_Pandaren.m2";
-		local playerFaction = UnitFactionGroup(UNIT_PLAYER);
+		local playerFaction = UnitFactionGroup(self.UNIT_PLAYER);
 
 		if playerFaction == "Alliance" then
 			modelPath = "UI_Human\\UI_Human.m2";
@@ -295,7 +294,7 @@ do
 
 			-- Construction tables.
 			local icons = {}; -- Storage for texture references.
-			local point = { point = "BOTTOMLEFT", x = 15, y = 15 };
+			local point = { point = self.ANCHOR_BOTTOMLEFT, x = 15, y = 15 };
 			local texture = { injectSelf = "Icon" };
 
 			local frameStructure = {
@@ -421,7 +420,7 @@ do
 		regionTitle:SetTextColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1);
 
 		-- Position tooltip relative to the anchor region.
-		tooltip:SetPoint("BOTTOMLEFT", anchor, "CENTER", 5, 5);
+		tooltip:SetPoint(self.ANCHOR_BOTTOMLEFT, anchor, self.ANCHOR_CENTER, 5, 5);
 		tooltip:Show();
 	end
 
@@ -480,7 +479,7 @@ do
 					},
 					{
 						texture = self.ARTWORK_PATH .. "UI-ResolutionLogo",
-						points = { point = "CENTER", y = 170 },
+						points = { point = self.ANCHOR_CENTER, y = 170 },
 						injectSelf = "logo",
 						size = {512, 256},
 						blendMode = "ADD",
@@ -491,13 +490,13 @@ do
 					OnUpdate = self.LoadFrame_OnUpdate
 				},
 				frames = {
-					{ displayID = 68845, mixin = loadModelMixin, points = { point = "CENTER", y = -120, x = 150 } },
-					{ displayID = 15398, mixin = loadModelMixin, points = { point = "CENTER", y = -120, x = -150 } }
+					{ displayID = 68845, mixin = loadModelMixin, points = { point = self.ANCHOR_CENTER, y = -120, x = 150 } },
+					{ displayID = 15398, mixin = loadModelMixin, points = { point = self.ANCHOR_CENTER, y = -120, x = -150 } }
 				}
 			});
 
 			self.loadBar = self:CreateProgressBar(self.loadFrame, "TestProgressBar", {
-				points = { point = "TOP", y = -135 }
+				points = { point = self.ANCHOR_TOP, y = -135 }
 			});
 		end
 
@@ -559,13 +558,13 @@ do
 				backdropColor = self.Palette.BarGeneric,
 				injectSelf = "BarFill",
 				points = {
-					{ point = "TOP", y = -2 },
-					{ point = "BOTTOM", y = 2 },
-					{ point = "LEFT", x = 2 },
-					{ point = "RIGHT", x = -400 }
+					{ point = self.ANCHOR_TOP, y = -2 },
+					{ point = self.ANCHOR_BOTTOM, y = 2 },
+					{ point = self.ANCHOR_LEFT, x = 2 },
+					{ point = self.ANCHOR_RIGHT, x = -400 }
 				},
 				texts = {
-					points = { point = "CENTER", relativeTo = name },
+					points = { point = self.ANCHOR_CENTER, relativeTo = name },
 					inherit = "GameFontNormal",
 					color = self.Palette.White,
 					injectSelf = "Text",
@@ -604,7 +603,7 @@ do
 		-- Reverse, and scale to 0-1.
 		value = (100 - value) / 100;
 
-		self.BarFill:SetPoint("RIGHT", (-398 * value) - 2, 0);
+		self.BarFill:SetPoint(_R.ANCHOR_RIGHT, (-398 * value) - 2, 0);
 	end
 
 	--[[
@@ -653,10 +652,10 @@ do
 
 		if self.lastCornerButton then
 			-- Anchor to the last button that was spawned.
-			spawnData.points = { point = "RIGHT", relativeTo = self.lastCornerButton, relativePoint = "LEFT", x = 5 };
+			spawnData.points = { point = self.ANCHOR_RIGHT, relativeTo = self.lastCornerButton, relativePoint = self.ANCHOR_LEFT, x = 5 };
 		else
 			-- Anchor to the main frame itself.
-			spawnData.points = { point = "TOPRIGHT", x = -5, y = -5 }
+			spawnData.points = { point = self.ANCHOR_TOPRIGHT, x = -5, y = -5 }
 		end
 
 		-- Keep track of the last button we spawned to assist with positioning.
@@ -676,8 +675,8 @@ do
 			parentName = name,
 			type = "ScrollFrame",
 			points = {
-				{ point = "TOPLEFT", x = 20, y = -40 },
-				{ point = "BOTTOMRIGHT", x = -20, y = 20 }
+				{ point = self.ANCHOR_TOPLEFT, x = 20, y = -40 },
+				{ point = self.ANCHOR_BOTTOMRIGHT, x = -20, y = 20 }
 			}
 		});
 
@@ -704,7 +703,7 @@ do
 			factoryName = "$parentSection",
 			texts = {
 				injectSelf = "Text",
-				points = "TOPLEFT" ,
+				points = self.ANCHOR_TOPLEFT ,
 				inherit = "Game11Font_o1"
 			}
 		});
@@ -730,8 +729,8 @@ do
 					desaturate = true,
 					injectSelf = "Icon",
 					points = {
-						{ point = "TOPLEFT", x = 4, y = -4 },
-						{ point = "BOTTOMRIGHT", x = -4, y = 4 }
+						{ point = self.ANCHOR_TOPLEFT, x = 4, y = -4 },
+						{ point = self.ANCHOR_BOTTOMRIGHT, x = -4, y = 4 }
 					}
 				},
 				{
@@ -789,16 +788,16 @@ do
 				-- This is not the first section, anchor to another.
 				if isMulti or previousIsMulti or currentRowWidth + sectionWidth > maxWidth then
 					-- Section requires its own row (isMulti) or clips over the max-width.
-					frame:SetPoint("TOPLEFT", rowFirstSection, "BOTTOMLEFT");
+					frame:SetPoint(self.ANCHOR_TOPLEFT, rowFirstSection, self.ANCHOR_BOTTOMLEFT);
 					rowFirstSection = frame; -- Mark this as the first frame for this row.
 					currentRowWidth = 0; -- Reset the row width.
 				else
 					-- Section can fit on to the current row.
-					frame:SetPoint("LEFT", previousSection, "RIGHT");
+					frame:SetPoint(self.ANCHOR_LEFT, previousSection, self.ANCHOR_RIGHT);
 				end
 			else
 				-- This is the first section, default anchor.
-				frame:SetPoint("TOPLEFT", self, "TOPLEFT");
+				frame:SetPoint(self.ANCHOR_TOPLEFT, self, self.ANCHOR_TOPLEFT);
 				rowFirstSection = frame; -- Mark this as the first frame for this row.
 			end
 
@@ -822,15 +821,15 @@ do
 					-- Not the first icon, attach to the correct icon.
 					if isMulti and i % maxIcons == 0 then
 						-- Cascade onto the next row.
-						icon:SetPoint("TOP", rowFirstIcon, "BOTTOM");
+						icon:SetPoint(self.ANCHOR_TOP, rowFirstIcon, self.ANCHOR_BOTTOM);
 						rowFirstIcon = icon; -- Mark as first icon in this row.
 					else
 						-- Continue the row from left to right.
-						icon:SetPoint("LEFT", previousIcon, "RIGHT");
+						icon:SetPoint(self.ANCHOR_LEFT, previousIcon, self.ANCHOR_RIGHT);
 					end
 				else
 					-- This is the first icon, default anchoring.
-					icon:SetPoint("TOPLEFT", frame, "TOPLEFT", 5, -GRID_SECTION_MARGIN);
+					icon:SetPoint(self.ANCHOR_TOPLEFT, frame, self.ANCHOR_TOPLEFT, 5, -GRID_SECTION_MARGIN);
 					rowFirstIcon = icon; -- Mark as first icon in this row.
 				end
 

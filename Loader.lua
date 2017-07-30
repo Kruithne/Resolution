@@ -15,6 +15,12 @@ do
 	local math_floor = math.floor;
 	local co_create = coroutine.create;
 
+	local UnitLevel = UnitLevel;
+	local UnitClass = UnitClass;
+	local UnitRace = UnitRace;
+	local UnitName = UnitName;
+	local GetRealmName = GetRealmName;
+
 	-- [[ Loader ]] --
 	_R.Loader = {
 		_step = 1, -- Used to track the current executing step.
@@ -36,20 +42,17 @@ do
 			-- Collection: Characters
 			function(self)
 				yield(self.LOADING_TEXT_CHAR);
-				local UnitName = UnitName;
-				local GetRealmName = GetRealmName;
-				local strPlayer = "player";
 
-				local playerLevel = UnitLevel(strPlayer);
+				local playerLevel = UnitLevel(self.UNIT_PLAYER);
 				local charStore = ResolutionDataCharacters;
-				local classIndex = select(3, UnitClass(strPlayer));
+				local classIndex = select(3, UnitClass(self.UNIT_PLAYER));
 				local existingChar = charStore[classIndex];
 
 				if not existingChar or existingChar.level <= playerLevel then
 					charStore[classIndex] = {
-						name = UnitName(strPlayer),
+						name = UnitName(self.UNIT_PLAYER),
 						level = playerLevel,
-						race = select(2, UnitRace(strPlayer)),
+						race = select(2, UnitRace(self.UNIT_PLAYER)),
 						realm = GetRealmName()
 					};
 				end
@@ -64,7 +67,7 @@ do
 
 					-- We don't care about characters with less than a day.
 					if days > 0 then
-						local playerName, realmName = UnitName(strPlayer), GetRealmName();
+						local playerName, realmName = UnitName(self.UNIT_PLAYER), GetRealmName();
 						ResolutionDataPlayed[playerName .. "-" .. realmName] = days;
 					end
 
@@ -162,7 +165,7 @@ do
 			-- Attempt to enable addon for this character.
 			local _, _, _, canLoad, canLoadReason = GetAddOnInfo(name);
 			if canLoadReason == "DISABLED" then
-				EnableAddOn(name, UnitName("player"));
+				EnableAddOn(name, UnitName(_R.UNIT_PLAYER));
 			end
 
 			-- Attempt to load the add-on.
