@@ -325,6 +325,7 @@ do
 			local isFirstBar = true;
 			for typeKey, typeData in pairs(self.COLLECTION_TYPES) do
 				barStructure.injectSelf = injectName:SetAndGet(2, typeKey);
+				progressStructure.text = typeData.header;
 
 				local bar = self.frameInterface:SpawnFrame(barStructure);
 
