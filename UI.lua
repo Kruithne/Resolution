@@ -339,7 +339,7 @@ do
 
 				progressStructure.points.relativeTo = bar;
 				bar.Icon:SetTexture("Interface\\ICONS\\" .. typeData.icon);
-				bar.progressBar = self:CreateProgressBar(self.frameInterface, barName:SetAndGet(typeKey), progressStructure);
+				bar.progressBar = self:CreateProgressBar(self.frameInterface, barName:SetAndGet(2, typeKey), progressStructure);
 
 				bars[typeKey] = bar; -- Store this region for later usage.
 				previousBar = bar;
