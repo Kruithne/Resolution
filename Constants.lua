@@ -60,7 +60,7 @@ do
 		White = CreateColor(1, 1, 1, 1),
 		Transparent = CreateColor(0, 0, 0, 0),
 		Disabled = CreateColor(0.63, 0.63, 0.63),
-		OverviewOrange = CreateColor(0.97, 0.55, 0.16, 1);
+		OverviewOrange = CreateColor(0.97, 0.55, 0.16, 1),
 	};
 
 	_R.WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";
