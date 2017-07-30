@@ -63,7 +63,7 @@ do
 		OverviewOrange = CreateColor(0.97, 0.55, 0.16, 1);
 	};
 
-	local WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";
+	_R.WHITE_TEXTURE = _R.ARTWORK_PATH .. "UI-White";
 
 	-- [[ Pre-constructed Frame Backdrops ]] --
 	_R.DesignKits = {
@@ -71,22 +71,22 @@ do
 			tile = true,
 			edgeSize = 1,
 			tileSize = 32,
-			bgFile = WHITE_TEXTURE,
-			edgeFile = WHITE_TEXTURE,
+			bgFile = _R.WHITE_TEXTURE,
+			edgeFile = _R.WHITE_TEXTURE,
 			insets = { left = 2, right = 2, top = 2, bottom = 2 }
 		},
 		["ETCHED_FRAME_STYLE"] = {
 			tile = true,
 			edgeSize = 1,
 			tileSize = 32,
-			bgFile = WHITE_TEXTURE,
-			edgeFile = WHITE_TEXTURE,
+			bgFile = _R.WHITE_TEXTURE,
+			edgeFile = _R.WHITE_TEXTURE,
 			insets = { left = 0, right = 0, top = 0, bottom = 0 }
 		},
 		["FLAT_FRAME_STYLE"] = {
 			tile = true,
 			tileSize = 32,
-			bgFile = WHITE_TEXTURE
+			bgFile = _R.WHITE_TEXTURE
 		}
 	};
 end

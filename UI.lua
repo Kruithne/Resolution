@@ -614,29 +614,30 @@ do
 			self - Reference to Resolution.
 	]]--
 	_R.CreateProgressBar = function(self, parent, name, data)
+		local width = data.width or 400;
 		local bar = parent:SpawnFrame({
-			width = data.width or 400, height = data.height or 30,
+			width = width, height = data.height or 30,
 			points = data.points,
 			name = name,
 			backdrop = self.DesignKits.GENERIC_FRAME_STYLE,
 			backdropColor = self.Palette.BarBackdrop,
 			backdropBorderColor = self.Palette.BarGeneric,
-			frames = {
-				backdrop = self.DesignKits.FLAT_FRAME_STYLE,
-				backdropColor = self.Palette.BarGeneric,
+			texts = {
+				points = { point = self.ANCHOR_CENTER },
+				inherit = "GameFontNormal",
+				color = self.Palette.White,
+				injectSelf = "Text",
+			},
+			textures = {
+				texture = self.WHITE_TEXTURE,
+				color = self.Palette.BarGeneric,
 				injectSelf = "BarFill",
 				points = {
 					{ point = self.ANCHOR_TOP, y = -2 },
 					{ point = self.ANCHOR_BOTTOM, y = 2 },
 					{ point = self.ANCHOR_LEFT, x = 2 },
-					{ point = self.ANCHOR_RIGHT, x = -400 }
-				},
-				texts = {
-					points = { point = self.ANCHOR_CENTER, relativeTo = name },
-					inherit = "GameFontNormal",
-					color = self.Palette.White,
-					injectSelf = "Text",
-				},
+					{ point = self.ANCHOR_RIGHT, x = -width }
+				}
 			},
 			data = {
 				SetBarProgress = self.ProgressBar_SetBarProgress,
@@ -671,7 +672,8 @@ do
 		-- Reverse, and scale to 0-1.
 		value = (100 - value) / 100;
 
-		self.BarFill:SetPoint(_R.ANCHOR_RIGHT, (-398 * value) - 2, 0);
+		local width = -(self:GetWidth() * 0.995);
+		self.BarFill:SetPoint(_R.ANCHOR_RIGHT, (width * value) - 2, 0);
 	end
 
 	--[[
@@ -682,7 +684,7 @@ do
 			color - Reference to a color object.
 	]]--
 	_R.ProgressBar_SetBarColor = function(self, color)
-		self.BarFill:SetBackdropColor(color);
+		self.BarFill:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1);
 		self:SetBackdropBorderColor(color);
 	end
 
@@ -694,7 +696,7 @@ do
 			text - Text to display on the bar.
 	]]--
 	_R.ProgressBar_SetBarText = function(self, text)
-		self.BarFill.Text:SetText(text);
+		self.Text:SetText(text);
 	end
 
 	--[[
