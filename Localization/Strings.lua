@@ -32,7 +32,7 @@ do
 
 		["TIP_TEXTS"] = {
 			"Tip: Resolution must be opened on a character for its progress to count.",
-			"Tip: Clicking on the bars above open an in-depth display of the collection."
+			"Tip: Click on the bars above to open an in-depth display of the collection."
 		}
 	};
 end
