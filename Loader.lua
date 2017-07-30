@@ -9,8 +9,10 @@
 do
 	-- [[ Local Optimization ]] --
 	local _R = Resolution;
+
 	local select = select;
 	local yield = coroutine.yield;
+	local math_floor = math.floor;
 	local co_create = coroutine.create;
 
 	-- [[ Loader ]] --
@@ -28,11 +30,14 @@ do
 
 				-- Initiate default storage containers.
 				ResolutionDataCharacters = ResolutionDataCharacters or {};
+				ResolutionDataPlayed = ResolutionDataPlayed or {};
 			end,
 
 			-- Collection: Characters
 			function(self)
 				yield(self.LOADING_TEXT_CHAR);
+				local UnitName = UnitName;
+				local GetRealmName = GetRealmName;
 				local strPlayer = "player";
 
 				local playerLevel = UnitLevel(strPlayer);
@@ -48,6 +53,29 @@ do
 						realm = GetRealmName()
 					};
 				end
+
+				-- Here we request the characters time played and intercept the response.
+				-- The reason we intercept the ChatFrame_DisplayTimePlayed hook rather than
+				-- just listening for the event ourself is to prevent unexpected chat output.
+				self.orig_ChatFrame_DisplayTimePlayed = ChatFrame_DisplayTimePlayed;
+				ChatFrame_DisplayTimePlayed = function(_, totalTime, levelTime)
+					-- totalTime is in minutes, 86400 seconds make a day.
+					local days = math_floor(totalTime / 86400);
+
+					-- We don't care about characters with less than a day.
+					if days > 0 then
+						local playerName, realmName = UnitName(strPlayer), GetRealmName();
+						ResolutionDataPlayed[playerName .. "-" .. realmName] = days;
+					end
+
+					-- Restore the original function and drop our reference to it.
+					ChatFrame_DisplayTimePlayed = self.orig_ChatFrame_DisplayTimePlayed;
+					self.orig_ChatFrame_DisplayTimePlayed = nil;
+
+					-- Signal for the UI to update the value.
+					self:UpdateTimePlayed();
+				end
+				RequestTimePlayed(); -- Send the actual request.
 			end,
 
 			-- Collection: Toys

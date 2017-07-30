@@ -227,7 +227,6 @@ do
 						points = { point = "BOTTOM", relativePoint = "TOP", relativeKey = "OverviewValue", y = 10 }
 					},
 					{
-						text = "1025 Days Played",
 						injectSelf = "OverviewPlayed",
 						fontSize = 24,
 						mixin = fontMixin,
@@ -249,6 +248,8 @@ do
 
 			-- Set the player model to the actual player.
 			self.frameInterface.PlayerModel:SetUnit(UNIT_PLAYER);
+
+			self:UpdateTimePlayed(); -- Update played time.
 		end
 
 		-- Render/update class icons.
@@ -368,6 +369,29 @@ do
 				classIcon._tooltipInfoString = infoChunk:Get(" ");
 			end
 		end
+	end
+
+	--[[
+		Resolution.UpdateTimePlayed
+		Update the time played display on the main interface.
+
+			self - Reference to Resolution.
+	]]--
+	_R.UpdateTimePlayed = function(self)
+		if not self.frameInterface then
+			-- Depending on server response time, this may be triggered during
+			-- the loading process, before the main interface is constructed.
+			return;
+		end
+
+		-- Tally up all days played by stored players.
+		local totalDaysPlayed = 0;
+		for playerID, daysPlayed in pairs(ResolutionDataPlayed) do
+			totalDaysPlayed = totalDaysPlayed + daysPlayed;
+		end
+
+		-- Update the text to display the new value.
+		self.frameInterface.OverviewPlayed:SetText(self.OVERVIEW_DAYS_PLAYED:format(totalDaysPlayed));
 	end
 
 	--[[
