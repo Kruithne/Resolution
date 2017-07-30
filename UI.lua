@@ -353,7 +353,6 @@ do
 		Render the class icons onto the main UI frame.
 
 			self - Reference to Resolution.
-
 	]]--
 	_R.RenderClassIcons = function(self)
 		-- Construct icons if needed.
