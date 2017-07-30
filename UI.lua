@@ -111,27 +111,31 @@ do
 				fontFlags = "OUTLINE"
 			};
 
+			-- Upvalues for the container OnUpdate function below.
+			local tips = self.TIP_TEXTS;
+			local hasUpdated = false;
+			local currentTipIndex, totalElapsed = 0, 0;
+
 			self.frameInterface = self.frameMain:SpawnFrame({
 				setAllPoints = true,
 				injectSelf = "Container",
-				data = { totalElapsed = 0, currentTipIndex = 0, tips = self.TIP_TEXTS },
 				scripts = {
 					OnUpdate = function(self, elapsed)
-						self.totalElapsed = self.totalElapsed + elapsed;
-						if not self.hasUpdated or self.totalElapsed >= 5 then
+						totalElapsed = totalElapsed + elapsed;
+						if not hasUpdated or totalElapsed >= 5 then
 							-- Move to the next tip, reset if needed.
-							self.currentTipIndex = self.currentTipIndex + 1;
-							if self.currentTipIndex > #self.tips then
-								self.currentTipIndex = 1;
+							currentTipIndex = currentTipIndex + 1;
+							if currentTipIndex > #tips then
+								currentTipIndex = 1;
 							end
 
 							 -- Update tip text.
-							self.TipText:SetText(self.tips[self.currentTipIndex]);
+							self.TipText:SetText(tips[currentTipIndex]);
 
-							self.totalElapsed = 0; -- Reset timer.
-							if not self.hasUpdated then
+							totalElapsed = 0; -- Reset timer.
+							if not hasUpdated then
 								-- This is used to force the first tip update without waiting.
-								self.hasUpdated = true;
+								hasUpdated = true;
 							end
 						end
 					end

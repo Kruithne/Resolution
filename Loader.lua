@@ -60,7 +60,7 @@ do
 				-- Here we request the characters time played and intercept the response.
 				-- The reason we intercept the ChatFrame_DisplayTimePlayed hook rather than
 				-- just listening for the event ourself is to prevent unexpected chat output.
-				self.orig_ChatFrame_DisplayTimePlayed = ChatFrame_DisplayTimePlayed;
+				local orig_ChatFrame_DisplayTimePlayed = ChatFrame_DisplayTimePlayed;
 				ChatFrame_DisplayTimePlayed = function(_, totalTime, levelTime)
 					-- totalTime is in minutes, 86400 seconds make a day.
 					local days = math_floor(totalTime / 86400);
@@ -71,9 +71,8 @@ do
 						ResolutionDataPlayed[playerName .. "-" .. realmName] = days;
 					end
 
-					-- Restore the original function and drop our reference to it.
-					ChatFrame_DisplayTimePlayed = self.orig_ChatFrame_DisplayTimePlayed;
-					self.orig_ChatFrame_DisplayTimePlayed = nil;
+					-- Restore the original function.
+					ChatFrame_DisplayTimePlayed = orig_ChatFrame_DisplayTimePlayed;
 
 					-- Signal for the UI to update the value.
 					self:UpdateTimePlayed();
