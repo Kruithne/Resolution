@@ -317,7 +317,7 @@ do
 			},
 			{
 				height = 15, width = 100,
-				color = self.OverviewOrange,
+				color = self.Palette.OverviewOrange,
 				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT },
 			};
 
