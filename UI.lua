@@ -315,9 +315,9 @@ do
 				}
 			},
 			{
-				height = 20, width = 250,
+				height = 25, width = 250,
 				color = self.Palette.OverviewOrange,
-				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT, x = -11 },
+				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT, x = -15 },
 				backdrop = self.DesignKits.GAPPED_BORDER_DARK,
 				backdropColor = self.Palette.BarBackdropDark,
 			};
