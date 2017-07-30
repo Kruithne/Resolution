@@ -316,14 +316,15 @@ do
 				}
 			},
 			{
-				height = 15, width = 100,
+				height = 20, width = 250,
 				color = self.Palette.OverviewOrange,
-				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT },
+				points = { point = self.ANCHOR_LEFT, relativePoint = self.ANCHOR_RIGHT, x = -11 },
 			};
 
 			local isFirstBar = true;
 			for typeKey, typeData in pairs(self.COLLECTION_TYPES) do
 				barStructure.injectSelf = injectName:SetAndGet(2, typeKey);
+
 				local bar = self.frameInterface:SpawnFrame(barStructure);
 
 				-- Update the anchoring for the next bar.
@@ -334,8 +335,9 @@ do
 					barStructure.points.relativeTo = bar;
 				end
 
+				progressStructure.points.relativeTo = bar;
 				bar.Icon:SetTexture("Interface\\ICONS\\" .. typeData.icon);
-				bar.progressBar = self:CreateProgressBar(bar, barName:SetAndGet(typeKey), progressStructure);
+				bar.progressBar = self:CreateProgressBar(self.frameInterface, barName:SetAndGet(typeKey), progressStructure);
 
 				bars[typeKey] = bar; -- Store this region for later usage.
 				previousBar = bar;
