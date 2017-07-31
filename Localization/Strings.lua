@@ -31,7 +31,7 @@ do
 		["OVERVIEW_DAYS_PLAYED"] = "%s Days Played",
 
 		["COLLECTION_TOYS"] = "Toys",
-		["COLLECTION_PETS"] = "Companion Pets",
+		["COLLECTION_PETS"] = "Battle Pets",
 		["COLLECTION_MOUNTS"] = "Mounts",
 		["COLLECTION_TITLES"] = "Titles",
 		["COLLECTION_APPEARANCES"] = "Appearances",

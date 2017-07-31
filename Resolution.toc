@@ -15,6 +15,14 @@ Krutilities/Krutilities.lua
 Bootstrap.lua
 Localization/Strings.lua
 Localization/Strings_frFR.lua
+Localization/Strings_deDE.lua
+Localization/Strings_esES.lua
+Localization/Strings_itIT.lua
+Localization/Strings_koKR.lua
+Localization/Strings_ptBR.lua
+Localization/Strings_ruRU.lua
+Localization/Strings_zhCN.lua
+Localization/Strings_zhTW.lua
 Constants.lua
 UI.lua
 EventHandling.lua
